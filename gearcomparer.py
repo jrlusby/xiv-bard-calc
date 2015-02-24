@@ -7,8 +7,6 @@
 # version than the excel version, also my potency numbers are slightly
 # lower than the excel version, which makes it even more confusing that i'd
 # get a higher abilitydps number
-bardweights = [1.0, 0, 0.339, 0.320, 0.161, 9.429]
-drgweights = [1.0, 0, .233, .327, .198, 9.349]
 def abilitydamage(WD, STR, DTR, potency):
     return (WD*.2714745 + STR*.1006032 + (DTR-202)*.0241327 + WD*STR*.0036167 + WD*(DTR-202)*.0010800 - 1) * (potency/100)
 
@@ -71,9 +69,9 @@ def bardrotation(CRIT, SS):
     dropdotrotationpps = dropdotrotationpotency/dropdotduration
     constantdotrotationpps = constantdotpotency/constantdotduration
     rotationpps = max(dropdotrotationpps, constantdotrotationpps)
-    if dropdotrotationpps > constantdotrotationpps:
-        print "omfg you're actually supposed to change ur rotation with this much SS"
 
+    # if dropdotrotationpps > constantdotrotationpps:
+    #     print "omfg you're actually supposed to change ur rotation with this much SS"
 
     # que the complex bloodletter math, heres the old version
     # BLFactor = ((1-(1-(critrate+0.1))*(1-(critrate+0.1)))/2)/3*150 * (1 + 0.5*(critrate+0.1))*stupid*1.08
@@ -105,10 +103,14 @@ def bardrotation(CRIT, SS):
 
 
 def main():
+    bardweights = [1.0, 0, 0.339, 0.320, 0.161, 9.429]
+    drgweights = [1.0, 0, .233, .327, .198, 9.349]
+
     dreadbow = [52, 3.2]
     augmentedironworksbow = [51, 3.04]
     yoichibow = [50, 3.04]
     highallaganbow = [48, 3.36]
+    zetabow = [52, 304]
 
     bis24 = calc_dps(645, 547, 647, 349, 350, dreadbow) # no i110 accessory true bis
     fouraccbis = calc_dps(626, 539, 694, 369, 395, dreadbow) # true bis
@@ -117,7 +119,7 @@ def main():
 
     chestremeldbelt = calc_dps(624, 543, 610, 353, 434, augmentedironworksbow)
     beltbootsdemonchest = calc_dps(616, 535, 614, 374, 429, augmentedironworksbow)
-    nossbis = calc_dps(630, 536, 705, 351, 341, dreadbow)
+    nossbis = calc_staticvalue(630, 536, 705, 351, 341, dreadbow, bardweights)
 
     ariyalabis = calc_staticvalue(663, 535, 558, 359, 370, [58, 2.88], drgweights)
     maskonly = calc_staticvalue(656, 537, 527, 406, 365, [58, 2.88], drgweights)
@@ -126,8 +128,9 @@ def main():
     wodcrafted = calc_staticvalue(616, 537, 638, 369, 401, augmentedironworksbow, bardweights)
     nonwod = calc_staticvalue(622, 535, 607, 368, 423, augmentedironworksbow, bardweights)
     dreadpantswod = calc_staticvalue(622, 544, 654, 347, 414, augmentedironworksbow, bardweights)
+    ruioshimabis = calc_staticvalue(626, 539, 694, 381, 341, zetabow, bardweights)
 
-    print nossbis, truebis, curgear
+    print nossbis, ruioshimabis
 
 if __name__ == "__main__":
     main()
