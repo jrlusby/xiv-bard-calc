@@ -7,6 +7,8 @@
 # version than the excel version, also my potency numbers are slightly
 # lower than the excel version, which makes it even more confusing that i'd
 # get a higher abilitydps number
+bardweights = [1.0, 0, 0.339, 0.320, 0.161, 9.429]
+drgweights = [1.0, 0, .233, .327, .198, 9.349]
 def abilitydamage(WD, STR, DTR, potency):
     return (WD*.2714745 + STR*.1006032 + (DTR-202)*.0241327 + WD*STR*.0036167 + WD*(DTR-202)*.0010800 - 1) * (potency/100)
 
@@ -38,8 +40,7 @@ def calc_value(STR, ACC, CRIT, DTR, SKS, WEP):
     value = STR*weights[0] + ACC*weights[1] + CRIT*weights[2] + DTR*weights[3] + SKS*weights[4] + WEP[0]*weights[5]
     return value
 
-def calc_staticvalue(STR, ACC, CRIT, DTR, SKS, WEP):
-    weights = [1.0, 0, 0.339, 0.320, 0.161, 9.429]
+def calc_staticvalue(STR, ACC, CRIT, DTR, SKS, WEP, weights):
     value = STR*weights[0] + ACC*weights[1] + CRIT*weights[2] + DTR*weights[3] + SKS*weights[4] + WEP[0]*weights[5]
     return value
 
@@ -106,9 +107,18 @@ def main():
 
     chestremeldbelt = calc_dps(624, 543, 610, 353, 434, augmentedironworksbow)
     beltbootsdemonchest = calc_dps(616, 535, 614, 374, 429, augmentedironworksbow)
+    nossbis = calc_dps(630, 536, 705, 351, 341, dreadbow)
+    nossbis = calc_dps(630, 536, 504, 351, 341, dreadbow)
 
+    ariyalabis = calc_staticvalue(663, 535, 558, 359, 370, [58, 2.88], drgweights)
+    maskonly = calc_staticvalue(656, 537, 527, 406, 365, [58, 2.88], drgweights)
+    maskbelt = calc_staticvalue(651, 537, 567, 379, 388, [58, 2.88], drgweights)
 
-    print chestremeldbelt, beltbootsdemonchest, curgear
+    wodcrafted = calc_staticvalue(616, 537, 638, 369, 401, augmentedironworksbow, bardweights)
+    nonwod = calc_staticvalue(622, 535, 607, 368, 423, augmentedironworksbow, bardweights)
+    dreadpantswod = calc_staticvalue(622, 544, 654, 347, 414, augmentedironworksbow, bardweights)
+
+    print wodcrafted, nonwod, dreadpantswod
 
 if __name__ == "__main__":
     main()
