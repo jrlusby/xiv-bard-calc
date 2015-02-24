@@ -60,11 +60,20 @@ def bardrotation(CRIT, SS):
     delay = 2.5-0.01*SS/10.5
     blprocrate = .5 # 50% chance that you get a proc on crit from dot
 
-    rotationpotency = (140*1.5 + (310+330+150*5)*critmodifier)*stupid
-    duration = 8*delay
+    dropdotrotationpotency = (140*1.5 + (310+330+150*5)*critmodifier)*stupid # this is the dot dropping rotation
+    dropdotduration = 8*delay
+    dotdroptime = (dropdotduration-18)*2 # each dot is off the target for duration - 18 seconds, theres two dots which is why its *2
+
+    constantdotpotency = (140*1.5 + (60+100+150*4+delay*7/3*80)*critmodifier)*stupid
+    constantdotduration = 7*delay
 
     ogcdpps = (350/60 + 50/30 + 80/30)*critmodifier*stupid
-    rotationpps = rotationpotency/duration
+    dropdotrotationpps = dropdotrotationpotency/dropdotduration
+    constantdotrotationpps = constantdotpotency/constantdotduration
+    rotationpps = max(dropdotrotationpps, constantdotrotationpps)
+    if dropdotrotationpps > constantdotrotationpps:
+        print "omfg you're actually supposed to change ur rotation with this much SS"
+
 
     # que the complex bloodletter math, heres the old version
     # BLFactor = ((1-(1-(critrate+0.1))*(1-(critrate+0.1)))/2)/3*150 * (1 + 0.5*(critrate+0.1))*stupid*1.08
@@ -80,7 +89,8 @@ def bardrotation(CRIT, SS):
 
     # chance of getting a double crit proc + 2*the chance of getting a single
     # critproc (can crit vb and not wb or wb and not vb)
-    BLprocchance = (critrate*blprocrate)**2 + 2*(critrate*blprocrate*(1-(critrate*blprocrate)))
+    BLprocchance = (critrate*blprocrate)**2 + 2*(critrate*blprocrate*(1-(critrate*blprocrate))) # 2dot proc chance
+    onedotBLPC = (critrate*blprocrate)
     BLPotency = 150
 
     # pps from procs + pps of natural bloodletters the stuff on natural
@@ -90,7 +100,7 @@ def bardrotation(CRIT, SS):
     # bloodletter proc * the potency of 1 bloodletter / 15 seconds = the
     # potency per second you're going to get over the entire fight from natural
     # bloodletters
-    BLFactor = (BLprocchance*BLPotency/3 + ((1-BLprocchance)**5)*BLPotency/15)*critmodifier*stupid
+    BLFactor = (BLprocchance*BLPotency/3 + ((1-BLprocchance)**5)*BLPotency/15)*critmodifier*stupid #to lazy to modify this to account for slightly lower bl chance in dot dropping rotation, requires almost 500 skillspeed to make it worth using an extra heavy shot and even then you only drop each dot for ~.5 seconds
     return BLFactor + rotationpps + ogcdpps
 
 
@@ -108,7 +118,6 @@ def main():
     chestremeldbelt = calc_dps(624, 543, 610, 353, 434, augmentedironworksbow)
     beltbootsdemonchest = calc_dps(616, 535, 614, 374, 429, augmentedironworksbow)
     nossbis = calc_dps(630, 536, 705, 351, 341, dreadbow)
-    nossbis = calc_dps(630, 536, 504, 351, 341, dreadbow)
 
     ariyalabis = calc_staticvalue(663, 535, 558, 359, 370, [58, 2.88], drgweights)
     maskonly = calc_staticvalue(656, 537, 527, 406, 365, [58, 2.88], drgweights)
@@ -118,7 +127,7 @@ def main():
     nonwod = calc_staticvalue(622, 535, 607, 368, 423, augmentedironworksbow, bardweights)
     dreadpantswod = calc_staticvalue(622, 544, 654, 347, 414, augmentedironworksbow, bardweights)
 
-    print wodcrafted, nonwod, dreadpantswod
+    print nossbis, truebis, curgear
 
 if __name__ == "__main__":
     main()
