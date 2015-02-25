@@ -93,13 +93,13 @@ dreadring = [23, 0, 0, 11, 22, 0] # pruned
 aironring = [23, 22, 15, 0, 0, 0]
 ironring = [21, 20, 14, 0, 0, 0] # wants to prune but thats only because it doesnt understand :(
 
-rings = [platring1, platring2, platring3, platring4, platring5, ironring, aironring] # accounting for unique rings is gonna be fun ._.
-uniquerings = [0, 0, 0, 0, 0, 1, 1] # you gotta maintain this manually ._., otherwise i'd have to come up with a better way to represent the gearset
+rings = [platring1, platring2, platring3, platring4, platring5, dreadring, ironring, aironring] # accounting for unique rings is gonna be fun ._.
+numuniquerings = 3 # keep this number accurate please, all unique rings go at the back.
 
 allitems = [weapon, head, body, hands, waist, legs, feet, necklace, earrings, bracelets, rings, rings] # weapon
 allindex = [0]*len(allitems)
 elzenbasestats = [277, 341, 341, 202, 341, 200]
 mincaps = numpy.array([0, 535, 0, 0, 0, 0])
-maxcaps = numpy.array([10000, 10000, 10000, 10000, 10000, 10000]) #gotta set these, high, if you let 0 = no comp it has to check for 0 aka more comparisons less efficient
+maxcaps = numpy.array([10000, 10000, 10000, 10000, 385, 10000]) #gotta set these, high, if you let 0 = no comp it has to check for 0 aka more comparisons less efficient
 
 bardweights = [1.0, 0, 0.339, 0.320, 0.161, 0, 9.429]
