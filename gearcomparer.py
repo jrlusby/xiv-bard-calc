@@ -90,6 +90,7 @@ def bardrotation(CRIT, SS):
     BLprocchance = (critrate*blprocrate)**2 + 2*(critrate*blprocrate*(1-(critrate*blprocrate))) # 2dot proc chance
     onedotBLPC = (critrate*blprocrate)
     BLPotency = 150
+    print "onedotdrop loss vs 2dots", (BLprocchance-onedotBLPC)*BLPotency, CRIT
 
     # pps from procs + pps of natural bloodletters the stuff on natural
     # bloodletters could be working on improper assumptions and I'd love
