@@ -87,10 +87,11 @@ def bardrotation(CRIT, SS):
 
     # chance of getting a double crit proc + 2*the chance of getting a single
     # critproc (can crit vb and not wb or wb and not vb)
-    BLprocchance = (critrate*blprocrate)**2 + 2*(critrate*blprocrate*(1-(critrate*blprocrate))) # 2dot proc chance
-    onedotBLPC = (critrate*blprocrate)
+    BLprocchance = blchance(critrate, 2) #2dot chance
+    onedotBLPC = blchance(critrate, 1)
     BLPotency = 150
     print "onedotdrop loss vs 2dots", (BLprocchance-onedotBLPC)*BLPotency, CRIT
+    print blchance(critrate, 2), andrewblchance(critrate, 2)
 
     # pps from procs + pps of natural bloodletters the stuff on natural
     # bloodletters could be working on improper assumptions and I'd love
@@ -102,6 +103,16 @@ def bardrotation(CRIT, SS):
     BLFactor = (BLprocchance*BLPotency/3 + ((1-BLprocchance)**5)*BLPotency/15)*critmodifier*stupid #to lazy to modify this to account for slightly lower bl chance in dot dropping rotation, requires almost 500 skillspeed to make it worth using an extra heavy shot and even then you only drop each dot for ~.5 seconds
     return BLFactor + rotationpps + ogcdpps
 
+def blchance(critrate, numDots):
+    blprocrate = .5
+    return 1 - (1-critrate*blprocrate)**numDots
+
+def andrewblchance(critrate, numDots):
+    blprocrate = .5
+    total = 0
+    for i in range(1, numDots+1): # the +1 is because of how python range works, if you do 1,10 it will include 1,2,3,4,5,6,7,8,9
+        total = total + (critrate*blprocrate)**i
+    return total
 
 def main():
     bardweights = [1.0, 0, 0.339, 0.320, 0.161, 9.429]
