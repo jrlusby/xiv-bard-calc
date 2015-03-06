@@ -14,23 +14,35 @@ def autoattackdamage(WD, STR, DTR, weapon_delay):
     return (WD*.2714745 + STR*.1006032 + (DTR-202)*.0241327 + WD*STR*.0036167 + WD*(DTR-202)*.0022597 - 1) * (weapon_delay/3)
 
 def sumdps(STR, CRIT, DTR, SS, WD, weapon_delay):
-    potency = bardrotation(CRIT, SS)
-    critrate = (CRIT*0.0697-18.437)/100 + 0.1*15/60 + .1
+    critrate = (CRIT*0.0697-18.437)/100+.1
     critmodifier = 1 + 0.5*critrate
-    cdmodifier = 1.25 # this was from the original spreadsheet, for barrage and other cds
+
+    ircritrate = critrate+.1
+    ircritmodifier = 1 + 0.5*ircritrate
+
+    cdmodifier = 1.25 # this was from the original spreadsheet, for barrage and other cds TODO remove
+
+    potency = bardrotation(critrate, SS)
     auto = autoattackdamage(WD, STR, DTR, weapon_delay)/weapon_delay*cdmodifier*critmodifier
     ability = abilitydamage(WD, STR, DTR, potency)
-    return auto+ability
+    noir = (auto+ability)
+
+    irpotency = bardrotation(ircritrate, SS)
+    irauto = autoattackdamage(WD, STR, DTR, weapon_delay)/weapon_delay*cdmodifier*ircritmodifier
+    irability = abilitydamage(WD, STR, DTR, irpotency)
+    ir = (irauto+irability)
+
+    return ir*15/60 + noir*45/60
 
 # expects weapon as a 2 element list of format [WeaponDamage, Delay]
 def calc_weights(STR, ACC, CRIT, DTR, SKS, WEP):
     SKS = SKS - 341
     base = sumdps(STR, CRIT, DTR, SKS, WEP[0], WEP[1])
-    strinc = sumdps(STR+1, CRIT, DTR, SKS, WEP[0], WEP[1])-base
-    critinc = sumdps(STR, CRIT+1, DTR, SKS, WEP[0], WEP[1])-base
-    detinc = sumdps(STR, CRIT, DTR+1, SKS, WEP[0], WEP[1])-base
-    ssinc = sumdps(STR, CRIT, DTR, SKS+1, WEP[0], WEP[1])-base
-    wdinc = sumdps(STR, CRIT, DTR, SKS, WEP[0]+1, WEP[1])-base
+    strinc = sumdps(STR+5, CRIT, DTR, SKS, WEP[0], WEP[1])-base
+    critinc = sumdps(STR, CRIT+5, DTR, SKS, WEP[0], WEP[1])-base
+    detinc = sumdps(STR, CRIT, DTR+5, SKS, WEP[0], WEP[1])-base
+    ssinc = sumdps(STR, CRIT, DTR, SKS+5, WEP[0], WEP[1])-base
+    wdinc = sumdps(STR, CRIT, DTR, SKS, WEP[0]+5, WEP[1])-base
     return [strinc/strinc, 0, critinc/strinc, detinc/strinc, ssinc/strinc, wdinc/strinc]
 
 def calc_value(STR, ACC, CRIT, DTR, SKS, WEP):
@@ -47,61 +59,41 @@ def calc_dps(STR, ACC, CRIT, DTR, SKS, WEP):
     base = sumdps(STR, CRIT, DTR, SKS, WEP[0], WEP[1])
     return base
 
-def bardrotation(CRIT, SS):
-    # assumes constant rotation of SS VB WB HS HS HS HS HS, assumes auto crit
-    # on ss since you had 5 chances to proc it, iunno how i feel about this but
-    # im just reusing the existing model used to calculate all stat weights for
-    # bard to date
-    stupid = 1.2
-    critrate = (CRIT*0.0697-18.437)/100 + 0.1*15/60 + .1 #crit chance + ss + ir
-    critmodifier = 1 + 0.5*critrate
+def bardrotation(critrate, SS):
     delay = 2.5-0.01*SS/10.5
-    blprocrate = .5 # 50% chance that you get a proc on crit from dot
+    stupid = 1.2
+    critmodifier = 1 + 0.5*critrate
+    blprocrate = .5
+    blonhit = 150
 
-    dropdotrotationpotency = (140*1.5 + (310+330+150*5)*critmodifier)*stupid # this is the dot dropping rotation
-    dropdotduration = 8*delay
-    dotdroptime = (dropdotduration-18)*2 # each dot is off the target for duration - 18 seconds, theres two dots which is why its *2
+    dropdotrotationpps = bardpotcalc(5, critmodifier, delay)*stupid
+    dotdroptime = (8*delay-18)*2
 
-    constantdotduration = 7*delay
-    pertickpotency = 45+35
-    constantdotpotency = (140*1.5 + (60+100+150*4+pertickpotency*constantdotduration/3)*critmodifier)*stupid
+    constantdotrotationpps = bardpotcalc(4, critmodifier, delay)*stupid
 
     ogcdpps = (350/60 + 50/30 + 80/30)*critmodifier*stupid
-    dropdotrotationpps = dropdotrotationpotency/dropdotduration
-    constantdotrotationpps = constantdotpotency/constantdotduration
-    print dropdotrotationpps, constantdotrotationpps
     rotationpps = max(dropdotrotationpps, constantdotrotationpps)
-
-    # if dropdotrotationpps > constantdotrotationpps:
-    #     print "omfg you're actually supposed to change ur rotation with this much SS"
-
-    # que the complex bloodletter math, heres the old version
-    # BLFactor = ((1-(1-(critrate+0.1))*(1-(critrate+0.1)))/2)/3*150 * (1 + 0.5*(critrate+0.1))*stupid*1.08
-    # trying my own version of bloodletter value, where its the chance of a
-    # proc on each dot tick / 3 plus the chance of getting zero procs for 15
-    # seconds. tested and it gives slightly higher numbers than the existing
-    # model, this is likely because it accounts for natural bloodletters and as
-    # far as i can tell the other one only includes procs, the 1.08 modifier
-    # might be a super lazy attempt to scale it up to account for natural
-    # bloodletters, i dont know. turns out he does account for natural
-    # bloodletters (he calls them hard wait) but his are static chance of
-    # happening when in reality it scales with crit
-
-    # chance of getting a double crit proc + 2*the chance of getting a single
-    # critproc (can crit vb and not wb or wb and not vb)
-    BLprocchance = blchance(critrate, 2) #2dot chance
+    BLprocchance = blchance(critrate, 2)
     onedotBLPC = blchance(critrate, 1)
-    BLPotency = 150
-
-    # pps from procs + pps of natural bloodletters the stuff on natural
-    # bloodletters could be working on improper assumptions and I'd love
-    # someone whos better than me at statistics to double check it, its
-    # currently assumed that the chance of going 15 seconds without a
-    # bloodletter proc * the potency of 1 bloodletter / 15 seconds = the
-    # potency per second you're going to get over the entire fight from natural
-    # bloodletters
-    BLFactor = (BLprocchance*BLPotency/3 + ((1-BLprocchance)**5)*BLPotency/15)*critmodifier*stupid #to lazy to modify this to account for slightly lower bl chance in dot dropping rotation, requires almost 500 skillspeed to make it worth using an extra heavy shot and even then you only drop each dot for ~.5 seconds
+    BLFactor = (BLprocchance*blonhit/3 + ((1-BLprocchance)**5)*blonhit/15)*critmodifier*stupid
     return BLFactor + rotationpps + ogcdpps
+
+def bardpotcalc(heavyshots, critmodifier, delay): #assumes singletarget, 2 dots
+    hsonhit = 150
+    wbonhit = 60
+    wbdot = 45
+    vbonhit = 100
+    vbdot = 35
+    ssonhit = 140
+
+    gcdcount = 3+heavyshots
+    duration = delay*gcdcount
+    dotticktime = min(duration, 18)
+    numticks = dotticktime/3
+
+    totalpotency = ssonhit*1.5 + (vbonhit+wbonhit+heavyshots*hsonhit + (vbdot+wbdot)*numticks)*critmodifier
+
+    return totalpotency/duration
 
 def blchance(critrate, numDots):
     blprocrate = .5
@@ -117,6 +109,7 @@ def andrewblchance(critrate, numDots):
 
 def main():
     bardweights = [1.0, 0, 0.339, 0.320, 0.161, 9.429]
+    newbardweights = [1.0, 0, 0.298, 0.331, 0.106, 9.139]
     drgweights = [1.0, 0, .233, .327, .198, 9.349]
 
     dreadbow = [52, 3.2]
@@ -132,8 +125,9 @@ def main():
     fouraccbis = calc_dps(626, 539, 694, 369, 395, dreadbow) # true bis
     curgear = calc_dps(622, 550, 605, 373, 401, augmentedironworksbow)
     truebis = calc_dps(621, 536, 710, 372, 432, zetabow)
-    truebised = calc_staticvalue(621, 536, 710, 372, 432, zetabow, bardweights)
-    truebised2 = calc_staticvalue(626, 535, 698, 380, 399, zetabow, bardweights)
+    weights = calc_weights(664, 536, 520, 338, 389, zetabow)
+    truebised = calc_staticvalue(621, 536, 710, 372, 432, zetabow, newbardweights)
+    truebised2 = calc_staticvalue(626, 535, 698, 380, 399, zetabow, newbardweights)
 
     chestremeldbelt = calc_dps(624, 543, 610, 353, 434, augmentedironworksbow)
     beltbootsdemonchest = calc_dps(616, 535, 614, 374, 429, augmentedironworksbow)
@@ -147,8 +141,10 @@ def main():
     nonwod = calc_staticvalue(622, 535, 607, 368, 423, augmentedironworksbow, bardweights)
     dreadpantswod = calc_staticvalue(622, 544, 654, 347, 414, augmentedironworksbow, bardweights)
     ruioshimabis = calc_staticvalue(626, 539, 694, 381, 341, zetabow, bardweights)
+    nocrafted = calc_dps(657, 539, 609, 346, 341, zetabow)
 
-    print truebis, truebised, truebised2
+    print weights
+    print truebis, truebised, truebised2, nocrafted
 
 if __name__ == "__main__":
     main()
