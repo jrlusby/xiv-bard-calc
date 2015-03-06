@@ -62,12 +62,14 @@ def bardrotation(CRIT, SS):
     dropdotduration = 8*delay
     dotdroptime = (dropdotduration-18)*2 # each dot is off the target for duration - 18 seconds, theres two dots which is why its *2
 
-    constantdotpotency = (140*1.5 + (60+100+150*4+delay*7/3*80)*critmodifier)*stupid
     constantdotduration = 7*delay
+    pertickpotency = 45+35
+    constantdotpotency = (140*1.5 + (60+100+150*4+pertickpotency*constantdotduration/3)*critmodifier)*stupid
 
     ogcdpps = (350/60 + 50/30 + 80/30)*critmodifier*stupid
     dropdotrotationpps = dropdotrotationpotency/dropdotduration
     constantdotrotationpps = constantdotpotency/constantdotduration
+    print dropdotrotationpps, constantdotrotationpps
     rotationpps = max(dropdotrotationpps, constantdotrotationpps)
 
     # if dropdotrotationpps > constantdotrotationpps:
@@ -90,8 +92,6 @@ def bardrotation(CRIT, SS):
     BLprocchance = blchance(critrate, 2) #2dot chance
     onedotBLPC = blchance(critrate, 1)
     BLPotency = 150
-    print "onedotdrop loss vs 2dots", (BLprocchance-onedotBLPC)*BLPotency, CRIT
-    print blchance(critrate, 2), andrewblchance(critrate, 2)
 
     # pps from procs + pps of natural bloodletters the stuff on natural
     # bloodletters could be working on improper assumptions and I'd love
@@ -110,8 +110,9 @@ def blchance(critrate, numDots):
 def andrewblchance(critrate, numDots):
     blprocrate = .5
     total = 0
-    for i in range(1, numDots+1): # the +1 is because of how python range works, if you do 1,10 it will include 1,2,3,4,5,6,7,8,9
-        total = total + (critrate*blprocrate)**i
+    p = critrate*blprocrate
+    for i in range(1, numDots+1):
+        total = total + p*(1-p)**(i-1)
     return total
 
 def main():
@@ -122,12 +123,17 @@ def main():
     augmentedironworksbow = [51, 3.04]
     yoichibow = [50, 3.04]
     highallaganbow = [48, 3.36]
-    zetabow = [52, 304]
+    zetabow = [52, 3.04]
+
+    #novus meld sets considered, 35, 24, 16 crit det acc, which results in 42, 29, 19
+    # 33, 23, 19 which results in 39, 28, 23
 
     bis24 = calc_dps(645, 547, 647, 349, 350, dreadbow) # no i110 accessory true bis
     fouraccbis = calc_dps(626, 539, 694, 369, 395, dreadbow) # true bis
     curgear = calc_dps(622, 550, 605, 373, 401, augmentedironworksbow)
-    truebis = calc_dps(621, 536, 710, 360, 432, dreadbow)
+    truebis = calc_dps(621, 536, 710, 372, 432, zetabow)
+    truebised = calc_staticvalue(621, 536, 710, 372, 432, zetabow, bardweights)
+    truebised2 = calc_staticvalue(626, 535, 698, 380, 399, zetabow, bardweights)
 
     chestremeldbelt = calc_dps(624, 543, 610, 353, 434, augmentedironworksbow)
     beltbootsdemonchest = calc_dps(616, 535, 614, 374, 429, augmentedironworksbow)
@@ -142,7 +148,7 @@ def main():
     dreadpantswod = calc_staticvalue(622, 544, 654, 347, 414, augmentedironworksbow, bardweights)
     ruioshimabis = calc_staticvalue(626, 539, 694, 381, 341, zetabow, bardweights)
 
-    print nossbis, ruioshimabis
+    print truebis, truebised, truebised2
 
 if __name__ == "__main__":
     main()
