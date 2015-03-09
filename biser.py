@@ -27,7 +27,7 @@ def pruneItem(item, itemSet, weights, mincap, maxcap, basestats):
         newval = itemValue(otherItem, weights)
         newcaps = mincap*otherItem
         comp = caps > newcaps # does item have higher stat for any mincap required item?
-        if newval*.98 > val and not True in comp:
+        if newval > val and not True in comp:
             return True
     return False
 

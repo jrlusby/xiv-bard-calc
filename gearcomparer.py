@@ -106,7 +106,7 @@ def bardpotcalc(heavyshots, critmodifier, delay): #assumes singletarget, 2 dots
     return totalpotency/duration
 
 def simulatedblpersec(critrate):
-    dotticks = 80000000 # 20 per minute, 100 minute sim
+    dotticks = 80000000 #+1) *3 = seconds
     numBL = 1
     numFails = 0
     prochance = blchance(critrate, 2)
@@ -123,7 +123,6 @@ def simulatedblpersec(critrate):
     return numBL/((dotticks+1)*3.0)
 
 
-
 def blchance(critrate, numDots):
     blprocrate = .5
     return 1 - (1-critrate*blprocrate)**numDots
@@ -138,7 +137,7 @@ def andrewblchance(critrate, numDots):
 
 def main():
     bardweights = [1.0, 0, 0.339, 0.320, 0.161, 9.429]
-    newbardweights = [1.0, 0, 0.298, 0.331, 0.106, 9.139]
+    newbardweights = [1.0, 0, 0.270, 0.333, 0.117, 9.919]
     drgweights = [1.0, 0, .233, .327, .198, 9.349]
 
     dreadbow = [52, 3.2]
@@ -150,10 +149,12 @@ def main():
     #novus meld sets considered, 35, 24, 16 crit det acc, which results in 42, 29, 19
     # 33, 23, 19 which results in 39, 28, 23
 
-    weights = calc_weights(664, 536, 520, 338, 389, zetabow)
-    print weights
-    weights2 = calc_weights(664, 536, 710, 338, 389, zetabow)
-    print weights2
+    # weights = calc_weights(664, 536, 520, 338, 389, zetabow)
+    # print weights
+    # weights2 = calc_weights(664, 536, 710, 338, 389, zetabow)
+    # print weights2
+    print calc_staticvalue(641, 541, 653, 368, 350, zetabow, newbardweights)
+    print calc_staticvalue(626, 537, 664, 384, 456, zetabow, newbardweights)
 
 if __name__ == "__main__":
     main()
