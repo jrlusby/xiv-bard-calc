@@ -85,11 +85,11 @@ dreadwrists = [23, 0, 22, 11, 0, 0]
 
 bracelets = [platwrists1, platwrists2, platwrists3, platwrists4, aironwrists, dreadwrists]
 
-platring1 = [18, 0, 19, 13, 18, 0]
-platring2 = [18, 9, 18, 13, 18, 0]
+platring1 = [18, 19, 18, 13, 0, 0]
+platring2 = [18, 18, 19, 13, 0, 0]
 platring3 = [18, 18, 18, 13, 9, 0]
-platring4 = [18, 19, 18, 13, 0, 0]
-platring5 = [18, 18, 19, 13, 0, 0]
+platring4 = [18, 9, 18, 13, 18, 0]
+platring5 = [18, 0, 19, 13, 18, 0]
 dreadring = [23, 0, 0, 11, 22, 0] # pruned
 aironring = [23, 22, 15, 0, 0, 0]
 ironring = [21, 20, 14, 0, 0, 0] # wants to prune but thats only because it doesnt understand :(
@@ -103,4 +103,4 @@ elzenbasestats = [277, 341, 341, 202, 341, 200]
 mincaps = numpy.array([0, 535, 0, 0, 0, 0])
 maxcaps = numpy.array([10000, 10000, 10000, 10000, 10000, 10000]) #gotta set these, high, if you let 0 = no comp it has to check for 0 aka more comparisons less efficient
 
-bardweights = [1.0, 0, 0.339, 0.320, 0.161, 0, 9.429]
+bardweights = [1.0, 0, 0.268, 0.333, 0.117, 0, 9.930]

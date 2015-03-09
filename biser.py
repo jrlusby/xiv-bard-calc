@@ -73,13 +73,13 @@ def isValid(itemset, allgears, indexes):
         return False
     return not False in mincomp and not False in maxcomp
 
-def gensetval(itemset): # use this if you're a bard and want precise comparisons (MrYaah Approved)
-    weapon = [52, 3.04] # zetabow
-    return gearcomparer.calc_dps(itemset[0], itemset[1], itemset[2], itemset[3], itemset[4], weapon)
-
-# def gensetval(itemset): # Use this for statweight calculations
+# def gensetval(itemset): # use this if you're a bard and want precise comparisons (MrYaah Approved)
 #     weapon = [52, 3.04] # zetabow
-#     return setValue(itemset, weapon, statweights)
+#     return gearcomparer.calc_dps(itemset[0], itemset[1], itemset[2], itemset[3], itemset[4], weapon)
+
+def gensetval(itemset): # Use this for statweight calculations
+    weapon = [52, 3.04] # zetabow
+    return setValue(itemset, weapon, statweights)
 
 def calc_bis(allitems, allindex, basestats):
     bestset = sumset(allitems, allindex, basestats)

@@ -1,4 +1,5 @@
 #! /usr/bin/python2
+import random
 
 # I have yet to pinpoint the reason why but for some reason my ability dps
 # equation is yielding a higher number than the spreadsheet (approx +40), I
@@ -14,7 +15,10 @@ def autoattackdamage(WD, STR, DTR, weapon_delay):
     return (WD*.2714745 + STR*.1006032 + (DTR-202)*.0241327 + WD*STR*.0036167 + WD*(DTR-202)*.0022597 - 1) * (weapon_delay/3)
 
 def sumdps(STR, CRIT, DTR, SS, WD, weapon_delay):
-    critrate = (CRIT*0.0697-18.437)/100+.1
+    print CRIT
+    critrate = (CRIT*0.0697-18.437)/100
+    # print critrate
+    critrate = critrate+.1
     critmodifier = 1 + 0.5*critrate
 
     ircritrate = critrate+.1
@@ -73,9 +77,12 @@ def bardrotation(critrate, SS):
 
     ogcdpps = (350/60 + 50/30 + 80/30)*critmodifier*stupid
     rotationpps = max(dropdotrotationpps, constantdotrotationpps)
+    # print constantdotrotationpps, dropdotrotationpps, SS
     BLprocchance = blchance(critrate, 2)
     onedotBLPC = blchance(critrate, 1)
-    BLFactor = (BLprocchance*blonhit/3 + ((1-BLprocchance)**5)*blonhit/15)*critmodifier*stupid
+    # BLFactor = (BLprocchance*blonhit/3 + ((1-BLprocchance)**5)*blonhit/15)*critmodifier*stupid
+    BLFactor = simulatedblpersec(critrate)*150
+    print BLFactor
     return BLFactor + rotationpps + ogcdpps
 
 def bardpotcalc(heavyshots, critmodifier, delay): #assumes singletarget, 2 dots
@@ -90,10 +97,32 @@ def bardpotcalc(heavyshots, critmodifier, delay): #assumes singletarget, 2 dots
     duration = delay*gcdcount
     dotticktime = min(duration, 18)
     numticks = dotticktime/3
+    # print critmodifier
+    # print numticks*wbdot*1.2*critmodifier, numticks*vbdot*1.2*critmodifier, hsonhit*1.2*critmodifier, ssonhit*1.5*1.2, wbonhit*critmodifier*1.2, vbonhit*critmodifier*1.2
 
     totalpotency = ssonhit*1.5 + (vbonhit+wbonhit+heavyshots*hsonhit + (vbdot+wbdot)*numticks)*critmodifier
+    # print totalpotency*1.2, duration
 
     return totalpotency/duration
+
+def simulatedblpersec(critrate):
+    dotticks = 80000000 # 20 per minute, 100 minute sim
+    numBL = 1
+    numFails = 0
+    prochance = blchance(critrate, 2)
+    for i in range(dotticks):
+        if random.random() < prochance:
+            numFails = 0
+            numBL = numBL + 1
+        else:
+            numFails = numFails + 1
+            if numFails == 5:
+                numFails = 0
+                numBL = numBL + 1
+    print "justprocs:", prochance*150/3
+    return numBL/((dotticks+1)*3.0)
+
+
 
 def blchance(critrate, numDots):
     blprocrate = .5
@@ -121,30 +150,10 @@ def main():
     #novus meld sets considered, 35, 24, 16 crit det acc, which results in 42, 29, 19
     # 33, 23, 19 which results in 39, 28, 23
 
-    bis24 = calc_dps(645, 547, 647, 349, 350, dreadbow) # no i110 accessory true bis
-    fouraccbis = calc_dps(626, 539, 694, 369, 395, dreadbow) # true bis
-    curgear = calc_dps(622, 550, 605, 373, 401, augmentedironworksbow)
-    truebis = calc_dps(621, 536, 710, 372, 432, zetabow)
     weights = calc_weights(664, 536, 520, 338, 389, zetabow)
-    truebised = calc_staticvalue(621, 536, 710, 372, 432, zetabow, newbardweights)
-    truebised2 = calc_staticvalue(626, 535, 698, 380, 399, zetabow, newbardweights)
-
-    chestremeldbelt = calc_dps(624, 543, 610, 353, 434, augmentedironworksbow)
-    beltbootsdemonchest = calc_dps(616, 535, 614, 374, 429, augmentedironworksbow)
-    nossbis = calc_staticvalue(630, 536, 705, 351, 341, dreadbow, bardweights)
-
-    ariyalabis = calc_staticvalue(663, 535, 558, 359, 370, [58, 2.88], drgweights)
-    maskonly = calc_staticvalue(656, 537, 527, 406, 365, [58, 2.88], drgweights)
-    maskbelt = calc_staticvalue(651, 537, 567, 379, 388, [58, 2.88], drgweights)
-
-    wodcrafted = calc_staticvalue(616, 537, 638, 369, 401, augmentedironworksbow, bardweights)
-    nonwod = calc_staticvalue(622, 535, 607, 368, 423, augmentedironworksbow, bardweights)
-    dreadpantswod = calc_staticvalue(622, 544, 654, 347, 414, augmentedironworksbow, bardweights)
-    ruioshimabis = calc_staticvalue(626, 539, 694, 381, 341, zetabow, bardweights)
-    nocrafted = calc_dps(657, 539, 609, 346, 341, zetabow)
-
     print weights
-    print truebis, truebised, truebised2, nocrafted
+    weights2 = calc_weights(664, 536, 710, 338, 389, zetabow)
+    print weights2
 
 if __name__ == "__main__":
     main()
