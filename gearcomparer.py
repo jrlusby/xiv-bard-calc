@@ -15,7 +15,7 @@ def autoattackdamage(WD, STR, DTR, weapon_delay):
     return (WD*.2714745 + STR*.1006032 + (DTR-202)*.0241327 + WD*STR*.0036167 + WD*(DTR-202)*.0022597 - 1) * (weapon_delay/3)
 
 def sumdps(STR, CRIT, DTR, SS, WD, weapon_delay):
-    print CRIT
+    # print CRIT
     critrate = (CRIT*0.0697-18.437)/100
     # print critrate
     critrate = critrate+.1
@@ -81,8 +81,8 @@ def bardrotation(critrate, SS):
     BLprocchance = blchance(critrate, 2)
     onedotBLPC = blchance(critrate, 1)
     # BLFactor = (BLprocchance*blonhit/3 + ((1-BLprocchance)**5)*blonhit/15)*critmodifier*stupid
-    BLFactor = simulatedblpersec(critrate)*150
-    print BLFactor
+    BLFactor = blpersec(critrate)*150
+    # print simulatedblpersec(critrate)*150, blpersec(critrate)*150
     return BLFactor + rotationpps + ogcdpps
 
 def bardpotcalc(heavyshots, critmodifier, delay): #assumes singletarget, 2 dots
@@ -135,6 +135,12 @@ def andrewblchance(critrate, numDots):
         total = total + p*(1-p)**(i-1)
     return total
 
+def blpersec(critrate):
+    A = blchance(critrate, 2)
+    timeperbl = 3*A + 6*A*(1-A) + 9*A*(1-A)**2 + 12*A*(1-A)**3 + 15*(1-A)**4
+    blps = 1/timeperbl
+    return blps
+
 def main():
     bardweights = [1.0, 0, 0.339, 0.320, 0.161, 9.429]
     newbardweights = [1.0, 0, 0.270, 0.333, 0.117, 9.919]
@@ -149,12 +155,12 @@ def main():
     #novus meld sets considered, 35, 24, 16 crit det acc, which results in 42, 29, 19
     # 33, 23, 19 which results in 39, 28, 23
 
-    # weights = calc_weights(664, 536, 520, 338, 389, zetabow)
-    # print weights
-    # weights2 = calc_weights(664, 536, 710, 338, 389, zetabow)
-    # print weights2
-    print calc_staticvalue(641, 541, 653, 368, 350, zetabow, newbardweights)
-    print calc_staticvalue(626, 537, 664, 384, 456, zetabow, newbardweights)
+    weights = calc_weights(664, 536, 520, 338, 389, zetabow)
+    print weights
+    weights2 = calc_weights(664, 536, 710, 338, 389, zetabow)
+    print weights2
+    # print calc_staticvalue(641, 541, 653, 368, 350, zetabow, newbardweights)
+    # print calc_staticvalue(626, 537, 664, 384, 456, zetabow, newbardweights)
 
 if __name__ == "__main__":
     main()
