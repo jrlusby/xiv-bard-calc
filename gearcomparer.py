@@ -37,14 +37,14 @@ def calc_weights(STR, ACC, CRIT, DTR, SKS, WEP):
     # partybuff = 1.03
     partybuff = 1.0
     hawkeseye = 1 + (.15*20/90)
+    buffs = hawkeseye
     # STR = math.floor(STR*partybuff*hawkeseye)
-    STR = STR*partybuff*hawkeseye
-    base = sumdps(STR, CRIT, DTR, SKS, WEP[0], WEP[1])
-    strinc = sumdps(STR+5, CRIT, DTR, SKS, WEP[0], WEP[1])-base
-    detinc = sumdps(STR, CRIT, DTR+5, SKS, WEP[0], WEP[1])-base
-    critinc = sumdps(STR, CRIT+5, DTR, SKS, WEP[0], WEP[1])-base
-    wdinc = sumdps(STR, CRIT, DTR, SKS, WEP[0]+5, WEP[1])-base
-    ssinc = sumdps(STR, CRIT, DTR, SKS+5, WEP[0], WEP[1])-base
+    base = sumdps(STR*buffs, CRIT, DTR, SKS, WEP[0], WEP[1])
+    strinc = sumdps((STR+5)*buffs, CRIT, DTR, SKS, WEP[0], WEP[1])-base
+    detinc = sumdps(STR*buffs, CRIT, DTR+5, SKS, WEP[0], WEP[1])-base
+    critinc = sumdps(STR*buffs, CRIT+5, DTR, SKS, WEP[0], WEP[1])-base
+    wdinc = sumdps(STR*buffs, CRIT, DTR, SKS, WEP[0]+5, WEP[1])-base
+    ssinc = sumdps(STR*buffs, CRIT, DTR, SKS+5, WEP[0], WEP[1])-base
     print strinc, detinc, critinc, wdinc, ssinc
     return [strinc/strinc, 0, critinc/strinc, detinc/strinc, ssinc/strinc, wdinc/strinc]
 
