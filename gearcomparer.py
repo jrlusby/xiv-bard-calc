@@ -56,7 +56,6 @@ def calc_dps(STR, ACC, CRIT, DTR, SKS, WEP):
     partybuff = 1.03
     hawkeseye = 1 + (.15*20/90)
     STR = math.floor(STR*partybuff*hawkeseye)
-    print STR
     base = sumdps(STR, CRIT, DTR, SKS, WEP[0], WEP[1])
     return base
 
@@ -73,7 +72,6 @@ def bardrotation(critrate, SS):
     ogcdpps = (350.0/60 + 50.0/30 + 80.0/30)*critmodifier*stupid
     rotationpps = max(dropdotrotationpps, constantdotrotationpps)
     BLFactor = blpersec(critrate)*150*critmodifier*stupid
-    # print "rot, bl, ogcd", rotationpps, BLFactor, ogcdpps
 
     return BLFactor + rotationpps + ogcdpps
 
@@ -89,10 +87,7 @@ def bardpotcalc(heavyshots, critmodifier, delay): #assumes singletarget, 2 dots
     duration = delay*gcdcount
     dotticktime = min(duration, 18)
     numticks = dotticktime/3
-    onhitpot = ssonhit*1.5 + (vbonhit + wbonhit + heavyshots*hsonhit)*critmodifier
-    dotpot = (vbdot+wbdot)*numticks*critmodifier
     totalpotency = ssonhit*1.5 + (vbonhit+wbonhit+heavyshots*hsonhit + (vbdot+wbdot)*numticks)*critmodifier
-    # print onhitpot, dotpot, totalpotency*1.2, duration, wbdot*duration/3*critmodifier*1.2, vbdot*duration/3*critmodifier*1.2
 
     return totalpotency/duration
 

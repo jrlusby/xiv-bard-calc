@@ -1,6 +1,7 @@
 import numpy
 
 zetabow = [57, 0, 53, 38, 0, 67]
+# zetabow = [54, 0, 0, 25, 51, 63]
 
 weapon = [zetabow]
 
