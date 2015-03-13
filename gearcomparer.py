@@ -1,5 +1,6 @@
 #! /usr/bin/python2
 import random
+import math
 
 def abilitydamage(WD, STR, DTR, potency):
     return (WD*.2714745 + STR*.1006032 + (DTR-202)*.0241327 + WD*STR*.0036167 + WD*(DTR-202)*.0010800 - 1) * (potency/100)
@@ -8,26 +9,26 @@ def autoattackdamage(WD, STR, DTR, weapon_delay):
     return (WD*.2714745 + STR*.1006032 + (DTR-202)*.0241327 + WD*STR*.0036167 + WD*(DTR-202)*.0022597 - 1) * (weapon_delay/3)
 
 def sumdps(STR, CRIT, DTR, SS, WD, weapon_delay):
+    cdmodifier = 1.25 # this was from the original spreadsheet, for barrage and other cds TODO remove
+
     critrate = (CRIT*0.0697-18.437)/100
     critrate = critrate+.1 # straight shot
     critmodifier = 1 + 0.5*critrate
-
-    ircritrate = critrate+.1
-    ircritmodifier = 1 + 0.5*ircritrate
-
-    cdmodifier = 1.25 # this was from the original spreadsheet, for barrage and other cds TODO remove
-
     potency = bardrotation(critrate, SS)
     auto = autoattackdamage(WD, STR, DTR, weapon_delay)/weapon_delay*cdmodifier*critmodifier
     ability = abilitydamage(WD, STR, DTR, potency)
+    # print "pot, auto, ability", potency, auto, ability
     noir = (auto+ability)
 
+    ircritrate = critrate+.1
+    ircritmodifier = 1 + 0.5*ircritrate
     irpotency = bardrotation(ircritrate, SS)
     irauto = autoattackdamage(WD, STR, DTR, weapon_delay)/weapon_delay*cdmodifier*ircritmodifier
     irability = abilitydamage(WD, STR, DTR, irpotency)
     ir = (irauto+irability)
 
     return ir*15/60 + noir*45/60
+    # return noir
 
 # expects weapon as a 2 element list of format [WeaponDamage, Delay]
 def calc_weights(STR, ACC, CRIT, DTR, SKS, WEP):
@@ -52,6 +53,10 @@ def calc_staticvalue(STR, ACC, CRIT, DTR, SKS, WEP, weights):
 
 def calc_dps(STR, ACC, CRIT, DTR, SKS, WEP):
     SKS = SKS - 341
+    partybuff = 1.03
+    hawkeseye = 1 + (.15*20/90)
+    STR = math.floor(STR*partybuff*hawkeseye)
+    print STR
     base = sumdps(STR, CRIT, DTR, SKS, WEP[0], WEP[1])
     return base
 
@@ -65,9 +70,10 @@ def bardrotation(critrate, SS):
     constantdotrotationpps = bardpotcalc(4, critmodifier, delay)*stupid
     dropdotrotationpps = bardpotcalc(5, critmodifier, delay)*stupid
 
-    ogcdpps = (350/60 + 50/30 + 80/30)*critmodifier*stupid
+    ogcdpps = (350.0/60 + 50.0/30 + 80.0/30)*critmodifier*stupid
     rotationpps = max(dropdotrotationpps, constantdotrotationpps)
-    BLFactor = blpersec(critrate)*150
+    BLFactor = blpersec(critrate)*150*critmodifier*stupid
+    # print "rot, bl, ogcd", rotationpps, BLFactor, ogcdpps
 
     return BLFactor + rotationpps + ogcdpps
 
@@ -83,7 +89,10 @@ def bardpotcalc(heavyshots, critmodifier, delay): #assumes singletarget, 2 dots
     duration = delay*gcdcount
     dotticktime = min(duration, 18)
     numticks = dotticktime/3
+    onhitpot = ssonhit*1.5 + (vbonhit + wbonhit + heavyshots*hsonhit)*critmodifier
+    dotpot = (vbdot+wbdot)*numticks*critmodifier
     totalpotency = ssonhit*1.5 + (vbonhit+wbonhit+heavyshots*hsonhit + (vbdot+wbdot)*numticks)*critmodifier
+    # print onhitpot, dotpot, totalpotency*1.2, duration, wbdot*duration/3*critmodifier*1.2, vbdot*duration/3*critmodifier*1.2
 
     return totalpotency/duration
 
@@ -131,10 +140,11 @@ def main():
     highallaganbow = [48, 3.36]
     zetabow = [52, 3.04]
 
-    weights = calc_weights(664, 536, 520, 338, 389, zetabow)
+    weights = calc_weights(664, 536, 520, 338, 394, zetabow)
+    # weights = calc_dps(664, 536, 520, 338, 394, zetabow)
     print weights
-    weights2 = calc_weights(664, 536, 710, 338, 389, zetabow)
-    print weights2
+    # weights2 = calc_weights(664, 536, 710, 338, 389, zetabow)
+    # print weights2
 
 if __name__ == "__main__":
     main()

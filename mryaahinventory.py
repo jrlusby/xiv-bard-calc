@@ -95,7 +95,8 @@ numuniquerings = 4 # keep this number accurate please, all unique rings go at th
 allitems = [weapon, head, body, hands, waist, legs, feet, necklace, earrings, bracelets, rings, rings] # weapon
 allindex = [0]*len(allitems)
 elzenbasestats = [277, 341, 341, 202, 341, 200]
-mincaps = numpy.array([0, 529, 0, 0, 0, 0])
+mincaps = numpy.array([0, 525, 0, 0, 0, 0])
 maxcaps = numpy.array([10000, 10000, 10000, 10000, 10000, 10000]) #gotta set these, high, if you let 0 = no comp it has to check for 0 aka more comparisons less efficient
 
-bardweights = [1.0, 0, 0.268, 0.333, 0.117, 0, 9.930]
+# bardweights = [1.0, 0, 0.268, 0.333, 0.117, 0, 9.930]
+bardweights = [1.0, 0, 0.31352691191263093, 0.3294681272393711, 0.11084879406445829, 0, 9.902571804226609]

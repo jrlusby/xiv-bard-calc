@@ -97,10 +97,15 @@ ironring = [21, 20, 14, 0, 0, 0] # wants to prune but thats only because it does
 rings = [platring1, platring2, platring3, platring4, platring5, dreadring, ironring, aironring] # accounting for unique rings is gonna be fun ._.
 numuniquerings = 3 # keep this number accurate please, all unique rings go at the back.
 
-allitems = [weapon, head, body, hands, waist, legs, feet, necklace, earrings, bracelets, rings, rings] # weapon
+flintcaviar = [[0,0], [.03, 16], [.05, 33], 0, 0, [.05, 28]]
+
+food = [flintcaviar]
+
+allitems = [food, weapon, head, body, hands, waist, legs, feet, necklace, earrings, bracelets, rings, rings] # weapon
 allindex = [0]*len(allitems)
 elzenbasestats = [277, 341, 341, 202, 341, 200]
-mincaps = numpy.array([0, 535, 0, 0, 0, 0])
-maxcaps = numpy.array([10000, 10000, 10000, 10000, 10000, 10000]) #gotta set these, high, if you let 0 = no comp it has to check for 0 aka more comparisons less efficient
+mincaps = numpy.array([0, 491, 0, 0, 0, 0])
+maxcaps = numpy.array([10000, 10000, 10000, 10000, 420, 10000]) # 420 is double ogcd cap according to krietor highwind
 
-bardweights = [1.0, 0, 0.268, 0.333, 0.117, 0, 9.930]
+# bardweights = [1.0, 0, 0.268, 0.333, 0.117, 0, 9.930]
+bardweights = [1.0, 0, 0.31352691191263093, 0.3294681272393711, 0.11084879406445829, 0, 9.902571804226609]

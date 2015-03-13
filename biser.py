@@ -4,7 +4,9 @@ import numpy
 import math
 import gearcomparer
 
-from bardinventory import * # change this to include the inventory you want to calculate against
+# from bardinventory import * # change this to include the inventory you want to calculate against
+from mryaahinventory import * # change this to include the inventory you want to calculate against
+
 
 statweights = bardweights
 
