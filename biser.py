@@ -8,6 +8,7 @@ import gearcomparer
 
 from cupcakeinv import * # change this to include the inventory you want to calculate against
 
+# [DEX, ACC, CRIT, DET, SKS, VIT, WD, DELAY] you can set any of the minimum or maximum values, its fun
 mincaps = numpy.array([0, 535, 0, 0, 0, 0, 0, 0])
 maxcaps = numpy.array([10000, 10000, 10000, 10000, 10000, 10000, 10000, 10000]) # 420 is double ogcd cap according to krietor highwind
 
