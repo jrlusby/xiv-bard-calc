@@ -4,63 +4,91 @@ import numpy
 import math
 import gearcomparer
 
-# from bardinventory import * # change this to include the inventory you want to calculate against
-from mryaahinventory import * # change this to include the inventory you want to calculate against
+### SETTINGS ###
 
+mincaps = numpy.array([0, 535, 0, 0, 0, 0, 0, 0])
+maxcaps = numpy.array([10000, 10000, 10000, 10000, 10000, 10000, 10000, 10000]) # 420 is double ogcd cap according to krietor highwind
+
+bardweights = [1.0, 0, 0.31130179206003517, 0.30955351760668787, 0.11010220595622823, 0, 9.806859476776257, 0]
+
+elzenbasestats = [277, 341, 341, 202, 341, 200, 0, 0]
 
 statweights = bardweights
+basestats = elzenbasestats
 
-def itemValue(item, weights):
-    return numpy.sum(numpy.array(item)*numpy.array(weights[:-1]))
+################
 
-def setValue(armorset, weapon, weights):
-    return itemValue(armorset, weights)+weapon[0]*weights[-1]
+from cupcakeinv import * # change this to include the inventory you want to calculate against
 
-def pruneMaxItems(item, itemSet, weights, mincap, maxcap, basestats):
-    for i in range(len(maxcap)):
-        if item[i] > maxcap[i]-basestats[i]:
+def itemValue(item):
+    stats = item[0]
+    return numpy.sum(numpy.array(stats)*numpy.array(statweights))
+
+def pruneMaxItems(item):
+    stats = item[0]
+    for i in range(len(maxcaps)):
+        if stats[i] > maxcaps[i]-basestats[i]:
+            print "exceded max, pruning ", item
             return True
     return False
 
-def pruneItem(item, itemSet, weights, mincap, maxcap, basestats):
-    val = itemValue(item, weights)
-    caps = mincap*item
+def pruneItem(item, itemSet):
+    prunecount = 0
+    val = itemValue(item)
+    caps = mincaps*item[0]
     for otherItem in itemSet:
-        newval = itemValue(otherItem, weights)
-        newcaps = mincap*otherItem
+        newval = itemValue(otherItem)
+        newcaps = mincaps*otherItem[0]
         comp = caps > newcaps # does item have higher stat for any mincap required item?
-        if newval*.98 > val and not True in comp:
-            return True
-    return False
+        if newval*.95 > val and not True in comp:
+            print item, " pruned by ", otherItem
+            prunecount = prunecount + 1
+            if len(otherItem) == 3:
+                prunecount = prunecount + otherItem[2]
+    return prunecount
 
-def pruneSet(itemSet, weights, mincap, maxcap, basestats):
+def pruneSet(itemSet):
     newset = []
-    for itemSubset in itemSet[:-2]:
+    for itemSubset in itemSet[:-3]:
         newitemsubset = []
         for item in itemSubset:
-            if not pruneMaxItems(item, itemSubset, weights, mincap, maxcap, basestats):
+            if not pruneMaxItems(item):
                 newitemsubset.append(item)
+        neweritemsubset = []
         for item in newitemsubset:
-            if pruneItem(item, itemSubset, weights, mincap, maxcap, basestats):
-                newitemsubset.remove(item)
-        newset.append(newitemsubset)
-    for itemSubset in itemSet[-2:]:
-        newset.append(itemSubset)
+            if pruneItem(item, newitemsubset) < 1:
+                neweritemsubset.append(item)
+        newset.append(neweritemsubset)
+    for itemSubset in itemSet[-3:-1]:
+        newitemsubset = []
+        for item in itemSubset:
+            if not pruneMaxItems(item):
+                newitemsubset.append(item)
+        neweritemsubset = []
+        for item in newitemsubset[:-unpruneablerings]:
+            if pruneItem(item, newitemsubset) < 2:
+                neweritemsubset.append(item)
+        neweritemsubset = neweritemsubset + newitemsubset[-unpruneablerings:]
+        newset.append(neweritemsubset)
+    newset.append(itemSet[-1])
     return newset
 
-def sumset(armorset, indexes, base):
-    for i in range(len(indexes)):
-        base = numpy.add(base, armorset[i][indexes[i]])
-    accplus = min(math.floor(base[1]*.03), 16)
-    critplus = min(math.floor(base[2]*.05), 33)
-    vitplus = min(math.floor(base[5]*.05), 28)
-    base = numpy.add(base, [0, accplus, critplus, 0, 0, vitplus])
+def sumset(armorset, indexes):
+    base = basestats
+    for i in range(len(indexes)-1):
+        base = numpy.add(base, armorset[i][indexes[i]][0])
+    foodstats = []
+    for i in range(len(armorset[-1][indexes[-1]][0])):
+        stat = armorset[-1][indexes[-1]][0][i]
+        statplus = min(math.floor(base[i]*stat[0]), stat[1])
+        foodstats.append(statplus)
+    base = numpy.add(base, foodstats)
     return base
 
-def increment(fullcombo, indexes):
+def increment(inventory, indexes):
     i = 0
-    while i < len(fullcombo):
-        if indexes[i]+1 == len(fullcombo[i]):
+    while i < len(inventory):
+        if indexes[i]+1 == len(inventory[i]):
             indexes[i] = 0
             i = i + 1
         else:
@@ -71,39 +99,54 @@ def increment(fullcombo, indexes):
 def isValid(itemset, allgears, indexes):
     mincomp = itemset >= mincaps
     maxcomp = itemset <= maxcaps
-    if indexes[-1] == indexes[-2] and indexes[-1] >= len(allgears[-1]) - numuniquerings:
+    if indexes[-2] == indexes[-3] and allgears[-2][indexes[-2]][2] == 1:
         return False
     return not False in mincomp and not False in maxcomp
 
 def gensetval(itemset): # use this if you're a bard and want precise comparisons (MrYaah Approved)
-    weapon = [52, 3.04] # zetabow
-    return gearcomparer.calc_dps(itemset[0], itemset[1], itemset[2], itemset[3], itemset[4], weapon)
+    return gearcomparer.calc_dps(itemset[0], itemset[1], itemset[2], itemset[3], itemset[4], [itemset[6], itemset[7]])
 
 # def gensetval(itemset): # Use this for statweight calculations
-#     weapon = [52, 3.04] # zetabow
-#     return setValue(itemset, weapon, statweights)
+#     return itemValue(itemset)
 
-def calc_bis(allitems, allindex, basestats):
-    bestset = sumset(allitems, allindex, basestats)
-    bestsetval = gensetval(bestset)
+def calc_bis(allitems):
+    allindex = [0]*len(allitems)
+    bestindex = allindex
+    bestset = sumset(allitems, allindex)
+    bestsetval = 0
     print bestsetval
     while(not increment(allitems, allindex)):
-        newset = sumset(allitems, allindex, basestats)
+        newset = sumset(allitems, allindex)
         if(isValid(newset, allitems, allindex)):
             newval = gensetval(newset)
-            if(newval > bestsetval):
+            if(newval >= bestsetval):
                 bestset = newset
                 bestsetval = newval
+                bestindex = list(allindex)
                 print bestsetval, bestset, allindex
-    print allindex
+    print bestindex
+    printSet(allitems, bestindex)
 
-def printSet(itemSet, indexes):
-    for i in range(len(indexes)):
-        print itemSet[i][indexes[i]]
+def printInventory(inventory):
+    i = 0
+    for slot in inventory:
+        for item in slot:
+            print item
+            i = i + 1
+    print i, "Items in set"
+
+def printSet(inventory, indexes):
+    for i in range(len(inventory)):
+        print(inventory[i][indexes[i]])
 
 
-prunedItems = pruneSet(allitems, statweights, mincaps, maxcaps, elzenbasestats)
-print numpy.array(prunedItems)
-calc_bis(prunedItems, allindex, elzenbasestats)
-print allindex
-# print pruneItem(item, bracelets, statweights, mincaps, maxcaps, elzenbasestats)
+# printInventory(allitems)
+prunedItems = pruneSet(allitems)
+# printInventory(prunedItems)
+# print numpy.array(prunedItems)
+# startset = sumset(prunedItems, [0]*len(prunedItems))
+# print startset
+# print gensetval(startset)
+calc_bis(prunedItems)
+# print allindex
+# # print pruneItem(item, bracelets, statweights, mincaps, maxcaps, elzenbasestats)
