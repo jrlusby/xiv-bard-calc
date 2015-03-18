@@ -6,6 +6,8 @@ import gearcomparer
 
 ### SETTINGS ###
 
+from cupcakeinv import * # change this to include the inventory you want to calculate against
+
 mincaps = numpy.array([0, 535, 0, 0, 0, 0, 0, 0])
 maxcaps = numpy.array([10000, 10000, 10000, 10000, 10000, 10000, 10000, 10000]) # 420 is double ogcd cap according to krietor highwind
 
@@ -17,8 +19,6 @@ statweights = bardweights
 basestats = elzenbasestats
 
 ################
-
-from cupcakeinv import * # change this to include the inventory you want to calculate against
 
 def itemValue(item):
     stats = item[0]
