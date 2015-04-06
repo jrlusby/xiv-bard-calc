@@ -4,9 +4,17 @@
 # makes it a lot easier to do the sums if I just make all the lists the same
 # length
 
-zetabow = [[57, 0, 53, 38, 0, 67, 52, 3.04], "zetabow"]
-augmentedironworksbow = [[54, 0, 0, 25, 51, 63, 51, 3.04], "Augmented Ironworks Magitek Bow"]
 
+
+rosenbogen = [[42, 0, 31, 0, 44, 49, 46, 3.2], "Rosenbogen"]
+habow = [[45, 32, 0, 32, 0, 53, 48, 3.36], "High Allagan Composite Bow"]
+diamondbow = [[45, 46, 0, 0, 32, 53, 48, 2.88], "Diamond Bow"]
+augmentedironworksbow = [[54, 0, 0, 25, 51, 63, 51, 3.04], "Augmented Ironworks Magitek Bow"]
+yoichibow = [[51, 0, 49, 35, 0, 60, 50, 3.04], "Yoichi Bow"]
+zetabow = [[57, 0, 53, 38, 0, 67, 52, 3.04], "zetabow"]
+
+auroralhat = [[24, 18, 0, 0, 25, 28, 0, 0], "Auroral Coif"]
+hamask = [[24, 25, 0, 12, 0, 28, 0, 0], "High Allagan Mask of Aiming"]
 kirimuhat1 = [[24, 25, 25, 18, 9, 28, 0, 0], "Kirimu Tricorne"]
 kirimuhat2 = [[24, 18, 25, 18, 18, 28, 0, 0], "Kirimu Tricorne"]
 kirimuhat3 = [[24, 9, 25, 18, 25, 28, 0, 0], "Kirimu Tricorne"]
@@ -15,12 +23,16 @@ demonhat = [[27, 19, 27, 0, 0, 32, 0, 0], "Demon Hat of Aiming"]
 aironhat = [[31, 29, 0, 14, 0, 36, 0, 0], "Augmented Ironworks Mask of Aiming"]
 dreadhat = [[31, 0, 20, 0, 29, 36, 0, 0], "Dreadwyrm Chapeau of Aiming"]
 
+auroralchest = [[39, 0, 41, 20, 0, 46, 0, 0], "Auroral Tabard"]
+hachest = [[39, 0, 41, 0, 29, 46, 0, 0], "High Allagan Coat of Aiming"]
 kirimuchest1 = [[39, 41, 41, 20, 0, 46, 0, 0], "Kirimu Coat"]
 kirimuchest2 = [[39, 41, 36, 26, 0, 46, 0, 0], "Kirimu Coat"]
 demonchest = [[45, 0, 44, 22, 0, 52, 0, 0], "Demon Tabard of Aiming"]
 aironworkschest = [[50, 33, 0, 0, 47, 59, 0, 0], "Augmented Ironworks Corselet of Aiming"]
 dreadchest = [[50, 0, 0, 34, 33, 59, 0, 0], "Dreadwyrm Tabard of Aiming"]
 
+auroralgloves = [[24, 25, 0, 0, 18, 28, 0, 0], "Auroral Bracers"]
+hagloves = [[24, 25, 0, 12, 0, 28, 0, 0], "High Allagan Gloves of Aiming"]
 kirimugloves1 = [[24, 25, 25, 18, 9, 28, 0, 0], "Kirimu Bracers"]
 kirimugloves2 = [[24, 18, 25, 18, 18, 28, 0, 0], "Kirimu Bracers"]
 kirimugloves3 = [[24, 9, 25, 18, 25, 28, 0, 0], "Kirimu Bracers"]
@@ -39,12 +51,16 @@ demonbelt = [[21, 14, 0, 0, 20, 24, 0, 0], "Demon Belt of Aiming"]
 aironbelt = [[23, 0, 15, 15, 0, 27, 0, 0], "Augmented Ironworks Belt of Aiming"]
 dreadbelt = [[23, 22, 0, 11, 0, 27, 0, 0], "Dreadwyrm Sash of Aiming"]
 
+auroralpants = [[39, 0, 0, 20, 41, 46, 0, 0], "Auroral Brais"]
+hapants = [[39, 0, 41, 0, 29, 46, 0, 0], "High Allagan Breeches of Aiming"]
 kirimupants1 = [[39, 41, 41, 20, 0, 46, 0, 0], "Kirimu Brais"]
 kirimupants2 = [[39, 41, 36, 26, 0, 46, 0, 0], "Kirimu Brais"]
 demonpants = [[45, 0, 0, 22, 44, 52, 0, 0], "Demon Breeches of Aiming"]
 aironpants = [[50, 47, 0, 0, 33, 59, 0, 0], "Augmented Ironworks Brais of Aiming"]
 dreadpants = [[50, 33, 47, 0, 0, 59, 0, 0], "Dreadwyrm Breeches of Aiming"]
 
+auroralfeet = [[24, 18, 0, 0, 25, 28, 0, 0], "Auroral Boots"]
+hafeet = [[24, 25, 0, 12, 0, 28, 0, 0], "High Allagan Boots of Aiming"]
 kirimufeet = [[24, 25, 25, 18, 9, 28, 0, 0], "Kirimu Boots of Aiming"]
 kirimufeetcheap = [[24, 25, 25, 18, 0, 28, 0, 0], "Kirimu Boots of Aiming"]
 demonfeet = [[27, 0, 19, 19, 0, 32, 0, 0], "Demon Boots of Aiming"]

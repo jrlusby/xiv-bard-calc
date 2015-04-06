@@ -6,13 +6,14 @@ import gearcomparer
 
 ### SETTINGS ###
 
-from cupcakeinv import * # change this to include the inventory you want to calculate against
+from mryaahinventory import * # change this to include the inventory you want to calculate against
 
 # [DEX, ACC, CRIT, DET, SKS, VIT, WD, DELAY] you can set any of the minimum or maximum values, its fun
-mincaps = numpy.array([0, 535, 0, 0, 0, 0, 0, 0])
+mincaps = numpy.array([0, 505, 0, 0, 0, 0, 0, 0])
 maxcaps = numpy.array([10000, 10000, 10000, 10000, 10000, 10000, 10000, 10000]) # 420 is double ogcd cap according to krietor highwind
 
-bardweights = [1.0, 0, 0.31130179206003517, 0.30955351760668787, 0.11010220595622823, 0, 9.806859476776257, 0]
+# bardweights = [1.0, 0, 0.31130179206003517, 0.30955351760668787, 0.11010220595622823, 0, 9.806859476776257, 0]
+bardweights = [1.0, 0, 0.31130179206003517, 0.40955351760668787, 0.11010220595622823, 0, 9.806859476776257, 0]
 
 elzenbasestats = [277, 341, 341, 202, 341, 200, 0, 0]
 
@@ -29,7 +30,7 @@ def pruneMaxItems(item):
     stats = item[0]
     for i in range(len(maxcaps)):
         if stats[i] > maxcaps[i]-basestats[i]:
-            print "exceded max, pruning ", item
+            # print "exceded max, pruning ", item
             return True
     return False
 
@@ -42,7 +43,7 @@ def pruneItem(item, itemSet):
         newcaps = mincaps*otherItem[0]
         comp = caps > newcaps # does item have higher stat for any mincap required item?
         if newval*.95 > val and not True in comp:
-            print item, " pruned by ", otherItem
+            # print item, " pruned by ", otherItem
             prunecount = prunecount + 1
             if len(otherItem) == 3:
                 prunecount = prunecount + otherItem[2]
@@ -115,7 +116,6 @@ def calc_bis(allitems):
     bestindex = allindex
     bestset = sumset(allitems, allindex)
     bestsetval = 0
-    print bestsetval
     while(not increment(allitems, allindex)):
         newset = sumset(allitems, allindex)
         if(isValid(newset, allitems, allindex)):
@@ -124,9 +124,7 @@ def calc_bis(allitems):
                 bestset = newset
                 bestsetval = newval
                 bestindex = list(allindex)
-                print bestsetval, bestset, allindex
-    print bestindex
-    printSet(allitems, bestindex)
+    return bestindex
 
 def printInventory(inventory):
     i = 0
@@ -140,6 +138,8 @@ def printSet(inventory, indexes):
     for i in range(len(inventory)):
         print(inventory[i][indexes[i]])
 
+# def pickNextBest(inventory, options):
+
 
 # printInventory(allitems)
 prunedItems = pruneSet(allitems)
@@ -148,6 +148,14 @@ prunedItems = pruneSet(allitems)
 # startset = sumset(prunedItems, [0]*len(prunedItems))
 # print startset
 # print gensetval(startset)
-calc_bis(prunedItems)
+acc = 491
+while acc < 536:
+    print "--------------------------------------------------------------------------------"
+    mincaps = numpy.array([0, acc, 0, 0, 0, 0, 0, 0])
+    bestset = calc_bis(prunedItems)
+    thisset = sumset(prunedItems, bestset)
+    print gensetval(thisset), thisset
+    printSet(prunedItems, bestset)
+    acc = thisset[1]+1
 # print allindex
 # # print pruneItem(item, bracelets, statweights, mincaps, maxcaps, elzenbasestats)

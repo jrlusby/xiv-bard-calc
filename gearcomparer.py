@@ -5,8 +5,18 @@ import math
 def abilitydamage(WD, STR, DTR, potency):
     return (WD*.2714745 + STR*.1006032 + (DTR-202)*.0241327 + WD*STR*.0036167 + WD*(DTR-202)*.0010800 - 1) * (potency/100)
 
+def jpabilitydamage(WD, AP, DTR, potency):
+    bard = 1.046875
+    job = bard
+    return (WD*0.26 + AP*(WD*0.00366+0.0745)+4.95) *((DTR-202)*0.0005+1.00)*job*(potency/100)
+
 def autoattackdamage(WD, STR, DTR, weapon_delay):
     return (WD*.2714745 + STR*.1006032 + (DTR-202)*.0241327 + WD*STR*.0036167 + WD*(DTR-202)*.0022597 - 1) * (weapon_delay/3)
+
+def jpautoattackdamage(WD, AP, DTR, weapon_delay):
+    bard = 1.046875
+    job = bard
+    return (WD*0.26 + AP*(WD*0.00366+0.0745)+4.95) *((DTR-202)*0.0010+1.00)*job*(weapon_delay/3)
 
 def sumdps(STR, CRIT, DTR, SS, WD, weapon_delay):
     cdmodifier = 1.25 # this was from the original spreadsheet, for barrage and other cds TODO remove
@@ -15,10 +25,16 @@ def sumdps(STR, CRIT, DTR, SS, WD, weapon_delay):
     critrate = critrate+.1 # straight shot
     critrate = critrate+(.1*1.0/4)
     critmodifier = 1 + 0.5*critrate
+    # print critmodifier
     potency = bardrotation(critrate, SS)
-    auto = autoattackdamage(WD, STR, DTR, weapon_delay)/weapon_delay*cdmodifier*critmodifier
+    # jpauto = jpautoattackdamage(WD, STR, DTR, weapon_delay)/weapon_delay*cdmodifier*critmodifier
+    # jpability = jpabilitydamage(WD, STR, DTR, potency)
+    # noir = (jpauto+jpability)
     ability = abilitydamage(WD, STR, DTR, potency)
+    auto = autoattackdamage(WD, STR, DTR, weapon_delay)/weapon_delay*cdmodifier*critmodifier
     noir = (auto+ability)
+    # print ability, jpability
+    # print auto, jpauto
     # print "DEX, pot, auto, ability", STR, potency, auto, ability, noir
 
     # ircritrate = critrate+.1
@@ -70,6 +86,8 @@ def calc_dps(STR, ACC, CRIT, DTR, SKS, WEP):
 
 def bardrotation(critrate, SS):
     delay = 2.5-0.01*SS/10.5
+    # delay = 250.256*(1.0-0.000381*(SS))/100.0
+    # print delay, jpdelay
     stupid = 1.2
     critmodifier = 1 + 0.5*critrate
     blprocrate = .5
@@ -81,6 +99,7 @@ def bardrotation(critrate, SS):
     ogcdpps = (350.0/60 + 50.0/30 + 80.0/30)*critmodifier*stupid
     rotationpps = max(dropdotrotationpps, constantdotrotationpps)
     BLFactor = blpersec(critrate)*150*critmodifier*stupid
+    # print BLFactor*3
 
     return BLFactor + rotationpps + ogcdpps
 
@@ -142,14 +161,21 @@ def main():
     augmentedironworksbow = [51, 3.04]
     yoichibow = [50, 3.04]
     highallaganbow = [48, 3.36]
+    diamondbow = [48, 2.88]
     zetabow = [52, 3.04]
     nobow = [0, 0]
 
-    # weights = calc_weights(664, 536, 520, 338, 389, zetabow)
+    weights = calc_weights(664, 536, 520, 338, 389, zetabow)
+    print weights
     # print calc_staticvalue(50, 47, 0, 0, 33, nobow, newbardweights)
     # print calc_staticvalue(39, 0, 41, 0, 29, nobow, newbardweights)
-    whatever = calc_dps(642, 540, 640, 355, 359, zetabow)
-    print whatever
+    # whatever = calc_dps(651, 535, 644, 331, 350, zetabow)
+    # whatever1 = calc_dps(626, 535, 697, 382, 373, zetabow)
+    # whatever2 = calc_dps(631, 535, 651, 394, 405, zetabow)
+    # print whatever
+    # print whatever1, whatever2, whatever1-whatever2
+    fiyodeeps = calc_dps(639, 0, 546, 350, 351, highallaganbow)
+    print fiyodeeps/477.0
 
 if __name__ == "__main__":
     main()
