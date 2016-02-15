@@ -1,24 +1,15 @@
 #! /usr/bin/python2
 import random
 import math
-
-def abilitydamage(WD, STR, DTR, potency):
-    BUFFS = 1.0
-    return ((potency*0.01005)*(WD*0.0400573+1)*(STR*0.1104171)*(DTR*0.0001368+1)*BUFFS)-1
-
-
-def autoattackdamage(WD, STR, DTR, weapon_delay):
-    BUFFS = 1.0
-    return ((WD*0.0319937+1)*(STR*0.1387779)*(DTR*0.0001513+1)*BUFFS)-1
-
+import common_dps
 
 def sumdps(STR, CRIT, DTR, SS, WD, weapon_delay):
     cdmodifier = 1.25 # this was from the original spreadsheet, for barrage and other cds TODO remove
 
-    critrate = (((CRIT-354)*0.0232558)+4.9511233)/100
+    critrate = common_dps.crit_rate(CRIT)
     critrate = critrate+.1 # straight shot
     critrate = critrate+(.1*1.0/4)
-    critdamage = ((CRIT-354)*0.000232558)+1.4484746
+    critdamage = common_dps.crit_damage(CRIT)
     critmodifier = 1 + (critdamage-1)*critrate
     # print critrate, critdamage, critmodifier
 
@@ -149,15 +140,15 @@ def blpersec(critrate):
 
 def main():
     CRIT = 934
-    critrate = (((CRIT-354)*0.0232558)+4.9511233)/100
+    critrate = common_dps.crit_rate(CRIT)
     critrate = critrate+.1 # straight shot
+    critrate = critrate+.1 # ir on
     # critrate = critrate+(.1*1.0/4)
-    critrate = critrate+.1
-    critdamage = ((CRIT-354)*0.000232558)+1.4484746
+    critdamage = common_dps.crit_damage(CRIT)
     critmodifier = 1 + (critdamage-1)*critrate
     print critrate, critdamage, critmodifier
     print (15*blpersec(critrate)*150 + 80*5 + 100 + 5*150)*critmodifier
-    print abilitydamage(68, 1.18*1078, 293, 100)/abilitydamage(68, 1.03*1078, 293, 100)
+    print common_dps.abilitydamage(68, 1.18*1078, 293, 100)/common_dps.abilitydamage(68, 1.03*1078, 293, 100)
 
 
 
