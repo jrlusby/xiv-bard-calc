@@ -6,19 +6,21 @@ import gearcomparer
 
 ### SETTINGS ###
 
-from mryaahinventory import * # change this to include the inventory you want to calculate against
+from BiSbardinventory import * # change this to include the inventory you want to calculate against
+# from mryaahinventory import * # change this to include the inventory you want to calculate against
 
 # [DEX, ACC, CRIT, DET, SKS, VIT, WD, DELAY] you can set any of the minimum or maximum values, its fun
-mincaps = numpy.array([0, 505, 0, 0, 0, 0, 0, 0])
+mincaps = numpy.array([0, 600, 0, 0, 0, 0, 0, 0])
 maxcaps = numpy.array([10000, 10000, 10000, 10000, 10000, 10000, 10000, 10000]) # 420 is double ogcd cap according to krietor highwind
 
 # bardweights = [1.0, 0, 0.31130179206003517, 0.30955351760668787, 0.11010220595622823, 0, 9.806859476776257, 0]
-bardweights = [1.0, 0, 0.31130179206003517, 0.40955351760668787, 0.11010220595622823, 0, 9.806859476776257, 0]
+bardweights = [1.0, 0, 0.125, 0.124, 0.070, 0, 9.806859476776257, 0]
 
-elzenbasestats = [277, 341, 341, 202, 341, 200, 0, 0]
+miqotebasestats = [299, 354, 354, 218, 354, 218, 0, 0]
 
 statweights = bardweights
-basestats = elzenbasestats
+# basestats = elzenbasestats
+basestats = miqotebasestats
 
 ################
 
@@ -29,6 +31,7 @@ def itemValue(item):
 def pruneMaxItems(item):
     stats = item[0]
     for i in range(len(maxcaps)):
+        print item
         if stats[i] > maxcaps[i]-basestats[i]:
             # print "exceded max, pruning ", item
             return True
@@ -148,8 +151,8 @@ prunedItems = pruneSet(allitems)
 # startset = sumset(prunedItems, [0]*len(prunedItems))
 # print startset
 # print gensetval(startset)
-acc = 491
-while acc < 536:
+acc = 630
+while acc < 700:
     print "--------------------------------------------------------------------------------"
     mincaps = numpy.array([0, acc, 0, 0, 0, 0, 0, 0])
     bestset = calc_bis(prunedItems)
