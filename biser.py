@@ -6,11 +6,11 @@ import gearcomparer
 
 ### SETTINGS ###
 
-from BiSbardinventory import * # change this to include the inventory you want to calculate against
+from mryaahinventory import * # change this to include the inventory you want to calculate against
 # from mryaahinventory import * # change this to include the inventory you want to calculate against
 
 # [DEX, ACC, CRIT, DET, SKS, VIT, WD, DELAY] you can set any of the minimum or maximum values, its fun
-mincaps = numpy.array([0, 600, 0, 0, 0, 0, 0, 0])
+mincaps = numpy.array([0, 550, 0, 0, 0, 0, 0, 0])
 maxcaps = numpy.array([10000, 10000, 10000, 10000, 10000, 10000, 10000, 10000]) # 420 is double ogcd cap according to krietor highwind
 
 # bardweights = [1.0, 0, 0.31130179206003517, 0.30955351760668787, 0.11010220595622823, 0, 9.806859476776257, 0]
@@ -151,8 +151,8 @@ prunedItems = pruneSet(allitems)
 # startset = sumset(prunedItems, [0]*len(prunedItems))
 # print startset
 # print gensetval(startset)
-acc = 630
-while acc < 700:
+acc = 595
+while acc < 647:
     print "--------------------------------------------------------------------------------"
     mincaps = numpy.array([0, acc, 0, 0, 0, 0, 0, 0])
     bestset = calc_bis(prunedItems)

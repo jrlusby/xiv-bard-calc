@@ -10,6 +10,7 @@ def calc_bard_dps(STR, CRIT, DTR, SS, WD, weapon_delay):
     # TODO move all buffs into calc_bard_dps
     buffs = 1*(1+(.2*20.0/120.0))*(1+(.1*20.0/90.0))*1.3  # raging strikes, blood for blood, wander's minuet
     STR = STR*1.03*(1+(.15*20.0/90.0)) # partybuff, hawks eye
+    STR = math.floor(STR)
     #TODO pot str change
 
     #constants
@@ -87,21 +88,21 @@ def calc_bard_dps(STR, CRIT, DTR, SS, WD, weapon_delay):
 
 # expects weapon as a 2 element list of format [WeaponDamage, Delay]
 def calc_weights(STR, ACC, CRIT, DTR, SKS, WEP):
-    # SKS = SKS - 341
-    partybuff = 1.03
-    hawkeseye = 1 + (.15*20/90)
-    # TODO insert dex pot math, should i assume x pot or drac pot?, ill allow for either, also ill check to see if it even makes a difference
-    buffs = hawkeseye*partybuff
-    BUFFSTR = STR*buffs
-    ADJSTR = (STR+5)*buffs
-    # print ADJSTR, BUFFSTR
+    # # SKS = SKS - 341
+    # partybuff = 1.03
+    # hawkeseye = 1 + (.15*20/90)
+    # # TODO insert dex pot math, should i assume x pot or drac pot?, ill allow for either, also ill check to see if it even makes a difference
+    # buffs = hawkeseye*partybuff
+    # BUFFSTR = STR*buffs
+    # ADJSTR = (STR+5)*buffs
+    # # print ADJSTR, BUFFSTR
 
-    base = sumdps(BUFFSTR, CRIT, DTR, SKS, WEP[0], WEP[1])
-    strinc = sumdps(ADJSTR, CRIT, DTR, SKS, WEP[0], WEP[1])-base
-    detinc = sumdps(BUFFSTR, CRIT, DTR+5, SKS, WEP[0], WEP[1])-base
-    critinc = sumdps(BUFFSTR, CRIT+5, DTR, SKS, WEP[0], WEP[1])-base
-    wdinc = sumdps(BUFFSTR, CRIT, DTR, SKS, WEP[0]+5, WEP[1])-base
-    ssinc = sumdps(BUFFSTR, CRIT, DTR, SKS+5, WEP[0], WEP[1])-base
+    base = calc_bard_dps(STR, CRIT, DTR, SKS, WEP[0], WEP[1])
+    strinc = calc_bard_dps(STR+5, CRIT, DTR, SKS, WEP[0], WEP[1])-base
+    detinc = calc_bard_dps(STR, CRIT, DTR+5, SKS, WEP[0], WEP[1])-base
+    critinc = calc_bard_dps(STR, CRIT+5, DTR, SKS, WEP[0], WEP[1])-base
+    wdinc = calc_bard_dps(STR, CRIT, DTR, SKS, WEP[0]+5, WEP[1])-base
+    ssinc = calc_bard_dps(STR, CRIT, DTR, SKS+5, WEP[0], WEP[1])-base
     print base
     # print strinc, detinc, critinc, wdinc, ssinc
     return [strinc/strinc, 0, critinc/strinc, detinc/strinc, ssinc/strinc, wdinc/strinc]
@@ -116,11 +117,15 @@ def calc_staticvalue(STR, ACC, CRIT, DTR, SKS, WEP, weights):
     value = STR*weights[0] + ACC*weights[1] + CRIT*weights[2] + DTR*weights[3] + SKS*weights[4] + WEP[0]*weights[5]
     return value
 
+# def calc_dps(STR, ACC, CRIT, DTR, SKS, WEP):
+#     partybuff = 1.03
+#     hawkeseye = 1 + (.15*20/90)
+#     STR = math.floor(STR*partybuff*hawkeseye)
+#     base = sumdps(STR, CRIT, DTR, SKS, WEP[0], WEP[1])
+#     return base
+
 def calc_dps(STR, ACC, CRIT, DTR, SKS, WEP):
-    partybuff = 1.03
-    hawkeseye = 1 + (.15*20/90)
-    STR = math.floor(STR*partybuff*hawkeseye)
-    base = sumdps(STR, CRIT, DTR, SKS, WEP[0], WEP[1])
+    base = calc_bard_dps(STR, CRIT, DTR, SKS, WEP[0], WEP[1])
     return base
 
 def bardrotation(critrate, critdamage, SS):
@@ -214,7 +219,8 @@ def main():
     # print critrate, critdamage, critmodifier
     # print (15*blpersec(critrate)*150 + 80*5 + 100 + 5*150)*critmodifier
     # print common_dps.abilitydamage(68, 1.18*1078, 293, 100)/common_dps.abilitydamage(68, 1.03*1078, 293, 100)
-    print calc_bard_dps(1075, 928, 293, 694, 68, 3.04)
+    print calc_weights(1070.,0,  920., 388., 642., [68., 3.04])
+    # print calc_bard_dps(1075, 928, 293, 694, 68, 3.04)
 
 
 
