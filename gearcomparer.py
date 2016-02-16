@@ -3,28 +3,94 @@ import random
 import math
 import common_dps
 
-def sumdps(STR, CRIT, DTR, SS, WD, weapon_delay):
-    cdmodifier = 1.25 # this was from the original spreadsheet, for barrage and other cds TODO remove
+dragoon = True
 
+# MONOLITHIC DPS FUNCTION BECAUSE THERES TOO MANY GOD DAMN EXCEPTIONS AND I CANT JUST CALCULATE THE POTENCY ALL AT ONCE, fucking pisses me off!
+def calc_bard_dps(STR, CRIT, DTR, SS, WD, weapon_delay):
+    # TODO move all buffs into calc_bard_dps
+    buffs = 1*(1+(.2*20.0/120.0))*(1+(.1*20.0/90.0))*1.3  # raging strikes, blood for blood, wander's minuet
+    STR = STR*1.03*(1+(.15*20.0/90.0)) # partybuff, hawks eye
+    #TODO pot str change
+
+    #constants
+    blprocrate = .5
+    blonhit = 150
+    hsonhit = 150
+    wbdot = 45
+    vbdot = 35
+    ssonhit = 140
+    ijonhit = 100
+    eaonhit = 240
+    faonhit = 35
+    if dragoon:
+        dragoonmod = 1.1
+    else:
+        dragoonmod = 1.0
+
+    # do crit math
     critrate = common_dps.crit_rate(CRIT)
     critrate = critrate+.1 # straight shot
-    critrate = critrate+(.1*1.0/4)
+    critrate = critrate+(.1*1.0/4) # internal release
+    if dragoon:
+        critrate = critrate+(.15*20.0/180.0) # battle litany
     critdamage = common_dps.crit_damage(CRIT)
     critmodifier = 1 + (critdamage-1)*critrate
-    # print critrate, critdamage, critmodifier
 
-    potency = bardrotation(critrate, critmodifier, SS)
-    ability = abilitydamage(WD, STR, DTR, potency)
-    auto = autoattackdamage(WD, STR, DTR, weapon_delay)/weapon_delay*cdmodifier*critmodifier
-    noir = (auto+ability)
+    # do skillspeed math
+    delay = common_dps.gcd_timer(SS)
+    dotmod = common_dps.dot_modifier(SS)
 
-    return noir
+    gcdcount = math.floor(18.0/delay)
+    duration = delay*gcdcount
+    dotticktime = duration
+    numticks = dotticktime/3
+
+    # normal rotation pps calculation
+    ss_potency = ssonhit*critdamage # assume guarunteed crit because thats the easiest way to approximate straightershot value, feel free to recommend a better way
+    doubledots_potency = (wbdot+vbdot)*critmodifier*dotmod*numticks
+    totalpotency = (ijonhit + hsonhit*(gcdcount-2))*critmodifier*dragoonmod + ss_potency*dragoonmod + doubledots_potency
+    rotation_pps = totalpotency/duration
+
+    # ogcd potencies
+    barrage_ea_pps = eaonhit*3/90.0*dragoonmod # ogcd pps
+    ba_pps = 50.0/30*critmodifier*dragoonmod
+    rs_pps = 80.0/30*critmodifier*dragoonmod
+    sw_pps = 250.0/60*critmodifier*dragoonmod
+    nonbarrage_ea_pps = eaonhit*5*critmodifier/90.0*dragoonmod #5 out of every 6 ea can crit!
+    flamingarrow_pps = faonhit*10*critmodifier*dotmod/60.0 # ogcd pps
+    bl_pps = blpersec(critrate)*150*critmodifier*dragoonmod
+
+    ogcd_pps = barrage_ea_pps + ba_pps + rs_pps + sw_pps + nonbarrage_ea_pps + flamingarrow_pps + bl_pps
+
+    totalpps = ogcd_pps + rotation_pps
+    dps = common_dps.abilitydamage(WD, STR, DTR, totalpps, buffs)
+    return dps
+
+# def sumdps(STR, CRIT, DTR, SS, WD, weapon_delay):
+#     cdmodifier = 1.25 # this was from the original spreadsheet, for barrage and other cds TODO remove
+
+#     critrate = common_dps.crit_rate(CRIT)
+#     critrate = critrate+.1 # straight shot
+#     critrate = critrate+(.1*1.0/4) # internal release
+#     if dragoon:
+#         critrate = critrate+(.15*20.0/180.0) # battle litany
+#     critdamage = common_dps.crit_damage(CRIT)
+#     critmodifier = 1 + (critdamage-1)*critrate
+
+#     potency = bardrotation(critrate, critmodifier, SS)
+#     # going to assume its 100% wanderers minuet
+#     ability = abilitydamage(WD, STR, DTR, potency)
+#     # auto = autoattackdamage(WD, STR, DTR, weapon_delay)/weapon_delay*cdmodifier*critmodifier
+#     noir = (auto+ability)
+
+#     return noir
 
 # expects weapon as a 2 element list of format [WeaponDamage, Delay]
 def calc_weights(STR, ACC, CRIT, DTR, SKS, WEP):
     # SKS = SKS - 341
     partybuff = 1.03
     hawkeseye = 1 + (.15*20/90)
+    # TODO insert dex pot math, should i assume x pot or drac pot?, ill allow for either, also ill check to see if it even makes a difference
     buffs = hawkeseye*partybuff
     BUFFSTR = STR*buffs
     ADJSTR = (STR+5)*buffs
@@ -73,27 +139,26 @@ def bardrotation(critrate, critdamage, SS):
 
     return BLFactor + rotationpps + ogcdpps
 
-def bardpotcalc(heavyshots, critmodifier, critdamage, SS): #assumes singletarget, 2 dots
-    # delay = 2.5-0.01*SS/10.5
-    # delay = 250.256*(1.0-0.000381*(SS))/100.0
-    delay = 2.50256-(0.01*(SS-354)/26.5)
-    sksmod = (1+(SS-354)*0.000138)
-    # print delay, SS, sksmod
-    # print delay, jpdelay
-    hsonhit = 150
-    wbonhit = 60
-    wbdot = 45
-    vbonhit = 100
-    vbdot = 35
-    ssonhit = 140
+# def bardpotcalc(heavyshots, critmodifier, critdamage, SS): #assumes singletarget, 2 dots
+#     # delay = 2.5-0.01*SS/10.5
+#     # delay = 250.256*(1.0-0.000381*(SS))/100.0
+#     sksmod = dotmodifier(SS)
+#     # print delay, SS, sksmod
+#     # print delay, jpdelay
+#     hsonhit = 150
+#     wbonhit = 60
+#     wbdot = 45
+#     vbonhit = 100
+#     vbdot = 35
+#     ssonhit = 140
 
-    gcdcount = 3+heavyshots
-    duration = delay*gcdcount
-    dotticktime = min(duration, 18)
-    numticks = dotticktime/3
-    totalpotency = ssonhit*critdamage + (vbonhit+wbonhit+heavyshots*hsonhit + (vbdot+wbdot)*numticks*sksmod)*critmodifier
+#     gcdcount = 3+heavyshots
+#     duration = delay*gcdcount
+#     dotticktime = min(duration, 18)
+#     numticks = dotticktime/3
+#     totalpotency = ssonhit*critdamage + (vbonhit+wbonhit+heavyshots*hsonhit + (vbdot+wbdot)*numticks*sksmod)*critmodifier
 
-    return totalpotency/duration
+#     return totalpotency/duration
 
 def simulatedblpersec(critrate):
     dotticks = 80000000 #+1) *3 = seconds
@@ -139,16 +204,17 @@ def blpersec(critrate):
     return blps
 
 def main():
-    CRIT = 934
-    critrate = common_dps.crit_rate(CRIT)
-    critrate = critrate+.1 # straight shot
-    critrate = critrate+.1 # ir on
-    # critrate = critrate+(.1*1.0/4)
-    critdamage = common_dps.crit_damage(CRIT)
-    critmodifier = 1 + (critdamage-1)*critrate
-    print critrate, critdamage, critmodifier
-    print (15*blpersec(critrate)*150 + 80*5 + 100 + 5*150)*critmodifier
-    print common_dps.abilitydamage(68, 1.18*1078, 293, 100)/common_dps.abilitydamage(68, 1.03*1078, 293, 100)
+    # CRIT = 934
+    # critrate = common_dps.crit_rate(CRIT)
+    # critrate = critrate+.1 # straight shot
+    # critrate = critrate+.1 # ir on
+    # # critrate = critrate+(.1*1.0/4)
+    # critdamage = common_dps.crit_damage(CRIT)
+    # critmodifier = 1 + (critdamage-1)*critrate
+    # print critrate, critdamage, critmodifier
+    # print (15*blpersec(critrate)*150 + 80*5 + 100 + 5*150)*critmodifier
+    # print common_dps.abilitydamage(68, 1.18*1078, 293, 100)/common_dps.abilitydamage(68, 1.03*1078, 293, 100)
+    print calc_bard_dps(1075, 928, 293, 694, 68, 3.04)
 
 
 

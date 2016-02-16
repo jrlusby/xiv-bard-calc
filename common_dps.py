@@ -2,18 +2,13 @@
 import random
 import math
 
-def abilitydamage(WD, STR, DTR, potency):
-    BUFFS = 1.0
+def abilitydamage(WD, STR, DTR, potency, BUFFS):
     return ((potency/100.0)*(WD/25.0+1)*(STR/9.0)*(DTR/7290.0+1)*BUFFS)-1
 
 
 def autoattackdamage(WD, STR, DTR, weapon_delay):
     BUFFS = 1.0
-    print "autos"
-    print (WD / 3.0 * weapon_delay/34.0 +1)
-    print (STR/6.8)
-    print (DTR/6795.0+1)
-    return ((WD / 3.0 * weapon_delay/34.0 +1) * (STR/6.8) * (DTR/6795.0+1)* BUFFS)-1
+    return ((WD/3.0*weapon_delay/34.0+1)*(STR/6.8)*(DTR/6795.0+1)*BUFFS)-1
 
 def crit_rate(CRIT):
     return ((CRIT-354.0)/(858.0*5.0))+0.05
@@ -22,14 +17,25 @@ def crit_damage(CRIT):
     return ((CRIT-354.0)/(858.0*5.0))+1.45
 
 def gcd_timer(SS):
-    return 2.50245-((SS-354)*0.0003776)
+    # print 2.50256-(0.01*(SS-354)/26.5)
+    # print 2.50245-((SS-354)*0.0003776)
+    # print 2.51-((SS-334)/2641.0)
+    # return 2.50256-(0.01*(SS-354)/26.5)
+    # return 2.50245-((SS-354)*0.0003776)
+    return 2.51-((SS-334)/2641)
+
+def dot_modifier(SS):
+    # return (1+(SS-354)*0.000138)
+    return ((SS-354)/7722.0+1)
 
 def main():
     print "hi"
     print gcd_timer(354)
+    print dot_modifier(354)
     print gcd_timer(654)
-    print abilitydamage(68, 1078, 293, 100)
-    print autoattackdamage(68, 1078, 293, 100)
+    print dot_modifier(654)
+    print abilitydamage(68, 1.18*1078, 293, 100)/abilitydamage(68, 1.03*1078, 293, 100)
+    # print autoattackdamage(68, 1078, 293, 3.2)
     # CRIT = 934
     # critrate = (((CRIT-354)*0.0232558)+4.9511233)/100
     # critrate = critrate+.1 # straight shot
