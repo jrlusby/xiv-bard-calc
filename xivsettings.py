@@ -1,4 +1,6 @@
 import numpy
+import sys
+sys.path.append("./inventories")
 from food import *
 from JobClass import *
 ### SETTINGS ###
