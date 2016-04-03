@@ -12,9 +12,14 @@ diamondbow = [[45, 46, 0, 0, 32, 53, 48, 2.88], "Diamond Bow"]
 augmentedironworksbow = [[54, 0, 0, 25, 51, 63, 51, 3.04], "Augmented Ironworks Magitek Bow"]
 yoichibow = [[51, 0, 49, 35, 0, 60, 50, 3.04], "Yoichi Bow"]
 zetabow = [[57, 0, 53, 38, 0, 67, 52, 3.04], "zetabow"]
+
 hivebow = [[92, 0, 83, 56, 0, 94, 65, 3.04], "Hive Bow"]
 berimbau = [[109, 0, 0, 97, 71, 115, 68, 3.04], "Berimbau"]
 glongbow = [[109, 0, 71, 0, 102, 115, 68, 3.04], "Gordian Longbow"]
+
+atmusket = [[141, 0, 120, 80, 0, 154, 72, 2.64], "Augmented Torrent Musketoon"]
+mmmusket = [[148, 0, 86, 0, 123, 162, 73, 2.64], "Prototype Midan Metal Musketoon"]
+
 
 auroralhat = [[24, 18, 0, 0, 25, 28, 0, 0], "Auroral Coif"]
 hamask = [[24, 25, 0, 12, 0, 28, 0, 0], "High Allagan Mask of Aiming"]
@@ -31,6 +36,9 @@ pghat = [[53, 33, 0, 45, 0, 54, 0, 0], "Prototype Gordian Hood of Aiming"]
 aoihat = [[62, 0, 0, 39, 58, 66, 0, 0], "Aoidos' Turban"]
 ghat = [[62, 41, 58, 0, 0, 66, 0, 0], "Gordian Hood of Aiming"]
 
+atmask = [[81, 69, 0, 0, 48, 88, 0, 0], "Augmented Torrent Mask of Aiming"]
+mgoggles = [[81, 48, 69, 0, 0, 88, 0, 0], "Midan Goggles of Aiming"]
+
 auroralchest = [[39, 0, 41, 20, 0, 46, 0, 0], "Auroral Tabard"]
 hachest = [[39, 0, 41, 0, 29, 46, 0, 0], "High Allagan Coat of Aiming"]
 kirimuchest1 = [[39, 41, 41, 20, 0, 46, 0, 0], "Kirimu Coat"]
@@ -43,6 +51,9 @@ asurtop = [[78, 0, 48, 66, 0, 78, 0, 0], "Asuran Dogi of Aiming"]
 pgtop = [[86, 77, 0, 0, 54, 87, 0, 0], "Prototype Gordian Corselet of Aiming"]
 aoitop = [[101, 94, 66, 0, 0, 107, 0, 0], "Aoidos' Cloak"]
 gtop = [[101, 0, 0, 63, 94, 107, 0, 0], "Gordian Corselet of Aiming"]
+
+atchest = [[131, 112, 0, 75, 0, 143, 0, 0], "Augmented Torrent Tabard of Aiming"]
+mchest = [[131, 0, 78, 0, 112, 143, 0, 0], "Midan Coat of Aiming"]
 
 auroralgloves = [[24, 25, 0, 0, 18, 28, 0, 0], "Auroral Bracers"]
 hagloves = [[24, 25, 0, 12, 0, 28, 0, 0], "High Allagan Gloves of Aiming"]
@@ -59,6 +70,9 @@ pggloves = [[53, 33, 47, 0, 0, 54, 0, 0], "Prototype Gordian Armguards of Aiming
 aoigloves = [[62, 41, 0, 0, 58, 66, 0, 0], "Aoidos' Shoulder Gloves"]
 ggloves = [[62, 0, 58, 0, 41, 66, 0, 0], "Gordian Armguards of Aiming"]
 
+atgloves = [[81, 48, 69, 0, 0, 88, 0, 0], "Augmented Torrent Armguards of Aiming"]
+mgloves = [[81, 0, 0, 66, 48, 88, 0, 0], "Midan Gloves of Aiming"]
+
 auroralsash = [[18, 0, 19, 9, 0, 21, 0, 0], "Auroral Sash"]
 habelt = [[18, 0, 13, 0, 19, 21, 0, 0], "High Allagan Belt of Aiming"]
 arachnesash1 = [[18, 19, 18, 13, 13, 21, 0, 0], "Arachne Sash"]
@@ -74,6 +88,9 @@ pgbelt = [[40, 0, 25, 0, 36, 40, 0, 0], "Prototype Gordian Belt of Aiming"]
 fabledbelt = [[47, 0, 0, 42, 30, 49, 0, 0], "Fabled Belt of Aiming"]
 gbelt = [[47, 30, 0, 0, 44, 49, 0, 0], "Gordian Belt of Aiming"]
 
+atbelt = [[61, 36, 0, 0, 51, 66, 0, 0], "Augmented Torrent Belt of Aiming"]
+mbelt = [[61, 0, 51, 36, 0, 66, 0, 0], "Midan Belt of Aiming"]
+
 auroralpants = [[39, 0, 0, 20, 41, 46, 0, 0], "Auroral Brais"]
 hapants = [[39, 0, 41, 0, 29, 46, 0, 0], "High Allagan Breeches of Aiming"]
 kirimupants1 = [[39, 41, 41, 20, 0, 46, 0, 0], "Kirimu Brais"]
@@ -86,6 +103,10 @@ asurpants = [[78, 48, 0, 66, 0, 78, 0, 0], "Asuran Haidate of Aiming"]
 pgpants = [[86, 0, 0, 52, 77, 87, 0, 0], "Prototype Gordian Poleyns of Aiming"]
 aoipants = [[101, 94, 0, 63, 0, 107, 0, 0], "Aoidos' Tights"]
 gpants = [[101, 66, 0, 0, 94, 107, 0, 0], "Gordian Poleyns of Aiming"]
+
+atpants = [[131, 0, 78, 0, 112, 143, 0, 0], "Augmented Torrent Tights of Aiming"]
+mpants = [[131, 112, 0, 75, 0, 143, 0, 0], "Midan Poleyns of Aiming"]
+
 
 auroralfeet = [[24, 18, 0, 0, 25, 28, 0, 0], "Auroral Boots"]
 hafeet = [[24, 25, 0, 12, 0, 28, 0, 0], "High Allagan Boots of Aiming"]
@@ -100,6 +121,9 @@ pgfeet = [[53, 47, 33, 0, 0, 54, 0, 0], "Prototype Gordian Sabatons of Aiming"]
 aoifeet = [[62, 0, 58, 0, 41, 66, 0, 0], "Aoidos' Thighboots"]
 gfeet = [[62, 58, 0, 39, 0, 66, 0, 0], "Gordian Sabatons of Aiming"]
 
+atfeet = [[81, 0, 48, 66, 0, 88, 0, 0], "Augmented Torrent Boots of Aiming"]
+mfeet = [[81, 69, 0, 0, 48, 88, 0, 0], "Midan Boots of Aiming"]
+
 auroralchoak = [[18, 13, 0, 13, 0, 0, 0, 0], "Auroral Choker"]
 hachoak = [[18, 0, 19, 9, 0, 0, 0, 0], "High Allagan Choker of Aiming"]
 scarf = [[18, 19, 18, 12, 9, 0, 0, 0], "Platinum Scarf of Ranging"]
@@ -112,6 +136,9 @@ asurneck = [[36, 32, 22, 0, 0, 0, 0, 0], "Asuran Necklace of Aiming"]
 pgneck = [[40, 0, 0, 34, 25, 0, 0, 0], "PRototype Gordian Neckband of Aiming"]
 fabledneck = [[47, 44, 0, 0, 30, 0, 0, 0], "Fabled Necklace of Aiming"]
 gneck = [[47, 30, 0, 42, 0, 0, 0, 0], "Gordian Neckband of Aiming"]
+
+apneck = [[61, 51, 0, 0, 36, 0, 0, 0], "Augmented Primal Choker of Aiming"]
+mneck = [[61, 36, 51, 0, 0, 0, 0, 0], "Midan Neckband of Aiming"]
 
 auroralear = [[18,19,13,0,0,0,0,0], "Auroral Earrings"]
 haear = [[18, 13, 0, 0, 19, 0, 0, 0], "High Allagan Earrings of Aiming"]
@@ -128,6 +155,9 @@ pgear = [[40, 0, 25, 0, 36, 0, 0, 0], "Prototype Gordian Earrings of Aiming"]
 fabledear = [[47, 0, 44, 0, 30, 0, 0, 0], "Fabled Earrings of Aiming"]
 gear = [[47, 30, 0, 0, 44, 0, 0, 0], "Gordian Earrings of Aiming"]
 
+apear = [[61, 0, 51, 34, 0, 0, 0, 0], "Augmented Primal Earrings of Aiming"]
+mear = [[61, 51, 0, 0, 36, 0, 0, 0], "Midan Earrings of Aiming"]
+
 auroralwrist = [[18, 19, 13, 0, 0, 0, 0, 0], "Auroral Wristlets"]
 habracelets = [[18, 0, 13, 0, 19, 0, 0, 0], "High Allagan Bracelets of Aiming"]
 shivawirsts = [[21, 0, 14, 0, 20, 0, 0, 0], "True Ice Bracelet of Aiming"]
@@ -143,6 +173,9 @@ pgwrist = [[40, 0, 36, 24, 0, 0, 0, 0], "Prototype Gordian Wristband of Aiming"]
 fabledwrist = [[47, 30, 44, 0, 0, 0, 0, 0], "Fabled Bracelet of Aiming"]
 gwrist = [[47, 0, 0, 29, 44, 0, 0, 0], "Gordian Wristband of Aiming"]
 
+apwrist = [[61, 51, 36, 0, 0, 0, 0, 0], "Augmented Primal Bracelet of Aiming"]
+mwrist = [[61, 0, 0, 49, 36, 0, 0, 0], "Midan Bracelets of Aiming"]
+
 ramuhring = [[18, 0, 19, 0, 13, 0, 0, 0], "Judgement Ring of Aiming", 1]
 auroralring = [[18, 13, 0, 0, 19, 0, 0, 0], "Auroral Ring", 1]
 haring = [[18, 19, 0, 9, 0, 0, 0, 0], "High Allagan Ring of Aiming", 1]
@@ -154,6 +187,10 @@ platring5 = [[18, 0, 19, 13, 18, 0, 0, 0], "Platinum Ring of Ranging", 0]
 dreadring = [[23, 0, 0, 11, 22, 0, 0, 0], "Dreadwyrm Ring of Aiming", 1]
 aironring = [[23, 22, 15, 0, 0, 0, 0, 0], "Augmented Ironworks Ring of Aiming", 1]
 ironring = [[21, 20, 14, 0, 0, 0, 0, 0], "Ironworks Ring of Aiming", 1]
+
+pring = [[56, 0, 34, 47, 0, 0, 0, 0], "Primal Ring of Aiming", 1]
+apring = [[61, 0, 36, 49, 0, 0, 0, 0], "Augmented Primal Ring of Aiming", 1]
+mring = [[61, 36, 0, 0, 51, 0, 0, 0], "Midan Ring of Aiming", 1]
 
 
 asurring = [[36, 22, 32, 0, 0, 0, 0, 0], "Asuran Ring of Aiming", 1]
