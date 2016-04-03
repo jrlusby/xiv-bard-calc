@@ -3,30 +3,11 @@
 import numpy
 import math
 import gearcomparer
+from xivsettings import *
 
-### SETTINGS ###
-
-from modernbarditems import * # change this to include the inventory you want to calculate against
-# from mryaahinventory import * # change this to include the inventory you want to calculate against
-
-# [DEX, ACC, CRIT, DET, SKS, VIT, WD, DELAY] you can set any of the minimum or maximum values, its fun
-mincaps = numpy.array([0, 550, 0, 0, 0, 0, 0, 0])
-maxcaps = numpy.array([10000, 10000, 10000, 10000, 10000, 10000, 10000, 10000]) # 420 is double ogcd cap according to krietor highwind
-
-# bardweights = [1.0, 0, 0.31130179206003517, 0.30955351760668787, 0.11010220595622823, 0, 9.806859476776257, 0]
-bardweights = [1.0, 0, 0.125, 0.124, 0.070, 0, 9.806859476776257, 0]
-mchweights = [1.0, 0, .300, .166, .166, 0, 13.459, 0]
-
-miqotebasestats = [299, 354, 354, 218, 354, 218, 0, 0]
-
-statweights = mchweights
-# basestats = elzenbasestats
-basestats = miqotebasestats
-
-################
 
 def itemValue(item):
-    return numpy.sum(numpy.array(item)*numpy.array(statweights))
+    return numpy.sum(numpy.array(item)*numpy.array(cJob.weights))
 
 def pruneMaxItems(item):
     stats = item[0]
@@ -99,23 +80,34 @@ def sumset(armorset, indexes):
     base = numpy.add(base, foodstats)
     return base
 
+incrementRing = False
+
 def increment(inventory, indexes):
+    global incrementRing
     i = 0
+    if incrementRing:
+        print indexes
+        i = len(indexes)-3
     while i < len(inventory):
         if indexes[i]+1 == len(inventory[i]):
             indexes[i] = 0
             i = i + 1
         else:
             indexes[i] = indexes[i]+1
+            if incrementRing:
+                print indexes
+                incrementRing = False
             return False
     return True
 
 def isValid(itemset, allgears, indexes):
+    global incrementRing
+    if allgears[-2][indexes[-2]][3] == allgears[-3][indexes[-3]][3] and allgears[-2][indexes[-2]][2] == 1:
+        incrementRing = True
+        print "invalid because of unique rings"
+        return False
     mincomp = itemset >= mincaps
     maxcomp = itemset <= maxcaps
-    if indexes[-2] == indexes[-3] and allgears[-2][indexes[-2]][2] == 1:
-        # print "invalid because of unique rings"
-        return False
     return not False in mincomp and not False in maxcomp
 
 # def gensetval(itemset): # use this if you're a bard and want precise comparisons (MrYaah Approved)
@@ -138,6 +130,7 @@ def calc_bis(allitems):
                 bestset = newset
                 bestsetval = newval
                 bestindex = list(allindex)
+                printSet(allitems, bestindex)
     return bestindex
 
 def printInventory(inventory):
@@ -162,14 +155,14 @@ prunedItems = pruneSet(allitems)
 # startset = sumset(prunedItems, [0]*len(prunedItems))
 # print startset
 # print gensetval(startset)
-acc = 700
-while acc < 703:
+acc = minacc
+while acc <= maxacc:
     print "--------------------------------------------------------------------------------"
-    mincaps = numpy.array([0, acc, 0, 0, 0, 0, 0, 0])
+    mincaps[1] = acc
     bestset = calc_bis(prunedItems)
     thisset = sumset(prunedItems, bestset)
     print gensetval(thisset), thisset
     printSet(prunedItems, bestset)
     acc = thisset[1]+1
 # print allindex
-# # print pruneItem(item, bracelets, statweights, mincaps, maxcaps, elzenbasestats)
+# # print pruneItem(item, bracelets, cJob.weights, mincaps, maxcaps, elzenbasestats)
