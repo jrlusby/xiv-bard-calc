@@ -19,8 +19,9 @@ ninweights = [1.0, 0, .215, .168, .106, 0, 12.799, 0]
 
 miqotebasestats = [299, 354, 354, 218, 354, 218, 0, 0]
 
-
-minlevel = 240
+overmeld = False
+minVmeldlevel = 240
+minlevel = 220
 mchfood = [pipirapira, gsweetfish, sstaff]
 blmfood = [applestrudle]
 
@@ -31,13 +32,13 @@ blm = JobClass(blmweights, blmfood, 25, 4)
 nin = JobClass(ninweights, mchfood, 30, 2)
 
 basestats = miqotebasestats
-cJob = nin
+cJob = mch
 food = cJob.food
 
-from nin240plus import * # change this to include the inventory you want to calculate against
+from mch240fullmeta import * # change this to include the inventory you want to calculate against
 # from mryaahinventory import * # change this to include the inventory you want to calculate against
 
-unpruneablerings = 2
+unpruneablerings = 0
 allitems = [ Arm, Head, Body, Hands, Waist, Legs, Feet, Necklace, Earrings, Bracelets, Ring, Ring, food, ]
 
 ################

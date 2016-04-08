@@ -29,10 +29,10 @@ def generateRawItem(item):
             }
     detailedItem = getQueryResponse(item["url_api"])
     # pprintjson(detailedItem)
-    if detailedItem["craftable"] == []:
-        meldslots = detailedItem["materia_slot_count"]
-    else:
+    if detailedItem["craftable"] != [] and overmeld:
         meldslots = 5
+    else:
+        meldslots = detailedItem["materia_slot_count"]
     # print detailedItem
     for attribute in detailedItem["attributes_params"]:
         stats[attribute["name"]] = max(attribute["value"], attribute["value_hq"])
@@ -109,6 +109,11 @@ def determine_caps(items):
 def generateMeldedVersions(item, statweights, caps):
     accmelds = 0
     mycaps = caps[item.itemlevel]
+    # TODO handle det melds
+    if item.itemlevel < minVmeldlevel:
+        materiamax = 9
+    else:
+        materiamax = 12
     # while we have done less acc melds than there are slots
     itemnames = []
     while accmelds <= item.meldslots:
@@ -119,14 +124,14 @@ def generateMeldedVersions(item, statweights, caps):
             bestmeldstats = 0
             bestmeldslot = 0
             for slot in range(2,5):
-                availstats = min(12, mycaps[item_type_to_index(item.geartype)][statslot_to_capslot(slot)] -item_copy.stats[slot])
+                availstats = min(materiamax, mycaps[item_type_to_index(item.geartype)][statslot_to_capslot(slot)] -item_copy.stats[slot])
                 if availstats*statweights[slot] > bestmeldstats*statweights[bestmeldslot]:
                     bestmeldstats = availstats
                     bestmeldslot = slot
             item_copy.stats[bestmeldslot] += bestmeldstats
             meldchoices += "+" + stat_names[bestmeldslot] + str(bestmeldstats)
         for i in range(0, accmelds):
-            availstats = min(12, mycaps[item_type_to_index(item.geartype)][0] - item_copy.stats[1])
+            availstats = min(materiamax, mycaps[item_type_to_index(item.geartype)][0] - item_copy.stats[1])
             item_copy.stats[1] += availstats
             meldchoices += "+" + stat_names[1] + str(availstats)
             if availstats == 0:
@@ -134,9 +139,9 @@ def generateMeldedVersions(item, statweights, caps):
         varname = item_copy.name.replace(" ", "_") + str(accmelds)
         item_copy.name += meldchoices
         item_list = [item_copy.stats, item_copy.name]
-        if "Ring" in item_copy.geartype:
-            item_list.append(item_copy.isunique)
-            item_list.append(item_copy.itemid)
+        # if "Ring" in item_copy.geartype:
+        item_list.append(item_copy.isunique)
+        item_list.append(item_copy.itemid)
         print varname + " = " + str(item_list)
         accmelds = accmelds + 1
         itemnames.append(varname)
