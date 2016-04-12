@@ -43,11 +43,11 @@ def generateRawItem(item):
     geartype = detailedItem["category_name"]
     itemid = detailedItem["id"]
     # isunique = detailedItem["is_unique"]
-    if meldslots == 5:
+    if detailedItem["craftable"] != 0:
         isunique = 0
     else:
         isunique = 1
-    return GearItem(stats[cJob.AttributeName()], stats["Accuracy"], stats["Critical Hit Rate"], stats["Determination"], stats[cJob.SSName()], stats["Vitality"], WEAPONDAMAGE, WEAPONDELAY, detailedItem["name"], meldslots, geartype, itemlevel, isunique, itemid)
+    return GearItem(stats[cJob.AttributeName()], stats["Accuracy"], stats["Critical Hit Rate"], stats["Determination"], stats[cJob.SSName()], stats["Vitality"], WEAPONDAMAGE, WEAPONDELAY, detailedItem["name"], meldslots, geartype, itemlevel, isunique, itemid, cJob.attributeval)
 
 
 def equip_slot_category_map(items):
@@ -110,10 +110,6 @@ def generateMeldedVersions(item, statweights, caps):
     accmelds = 0
     mycaps = caps[item.itemlevel]
     # TODO handle det melds
-    if item.itemlevel < minVmeldlevel:
-        materiamax = 9
-    else:
-        materiamax = 12
     # while we have done less acc melds than there are slots
     itemnames = []
     while accmelds <= item.meldslots:
@@ -124,6 +120,14 @@ def generateMeldedVersions(item, statweights, caps):
             bestmeldstats = 0
             bestmeldslot = 0
             for slot in range(2,5):
+                # determine the meld amount to use
+                if item.itemlevel < minVmeldlevel:
+                    if slot == 1 || slot == 2 || slot == 4
+                        materiamax = 9
+                    elif slot == 3
+                        materiamax = 6
+                else:
+                    materiamax = 12
                 availstats = min(materiamax, mycaps[item_type_to_index(item.geartype)][statslot_to_capslot(slot)] -item_copy.stats[slot])
                 if availstats*statweights[slot] > bestmeldstats*statweights[bestmeldslot]:
                     bestmeldstats = availstats
@@ -144,7 +148,8 @@ def generateMeldedVersions(item, statweights, caps):
         item_list.append(item_copy.itemid)
         print varname + " = " + str(item_list)
         accmelds = accmelds + 1
-        itemnames.append(varname)
+        if not item_copy.itemlevel > maxdefaultobtainedlvl:
+            itemnames.append(varname)
     return itemnames
 
 # TODO make this into a main function

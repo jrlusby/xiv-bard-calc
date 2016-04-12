@@ -1,7 +1,7 @@
 #! /usr/bin/python2
 import random
 import math
-import common_dps
+import CommonDps
 
 dragoon = True
 

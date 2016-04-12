@@ -23,7 +23,7 @@ class JobClass:
         if self.attributeval == 2:
             return "Dexterity"
         if self.attributeval == 3:
-            return "Vitality"
+            return "Strength"
         if self.attributeval == 4:
             return "Intelligence"
         if self.attributeval == 5:

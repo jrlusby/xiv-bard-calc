@@ -2,9 +2,21 @@
 
 import numpy
 import math
-import gearcomparer
+import BardModel
 from xivsettings import *
+import copy
 
+### SETTINGS ###
+
+# from blm230plus import * # change this to include the inventory you want to calculate against
+# from mryaahinventory import * # change this to include the inventory you want to calculate against
+# from mrconductivitywarinv import * # change this to include the inventory you want to calculate against
+from mryaahwarinv import * # change this to include the inventory you want to calculate against
+
+unpruneablerings = 0
+allitems = [ Arm, Head, Body, Hands, Waist, Legs, Feet, Necklace, Earrings, Bracelets, Ring, Ring, food, ]
+
+################
 
 def itemValue(item):
     return numpy.sum(numpy.array(item)*numpy.array(cJob.weights))
@@ -95,7 +107,7 @@ def increment(inventory, indexes):
         else:
             indexes[i] = indexes[i]+1
             if incrementRing:
-                print indexes
+                # print indexes
                 incrementRing = False
             return False
     return True
@@ -104,7 +116,7 @@ def isValid(itemset, allgears, indexes):
     global incrementRing
     if allgears[-2][indexes[-2]][3] == allgears[-3][indexes[-3]][3] and allgears[-2][indexes[-2]][2] == 1:
         incrementRing = True
-        print "invalid because of unique rings"
+        # print "invalid because of unique rings"
         return False
     mincomp = itemset >= mincaps
     maxcomp = itemset <= maxcaps
@@ -130,7 +142,7 @@ def calc_bis(allitems):
                 bestset = newset
                 bestsetval = newval
                 bestindex = list(allindex)
-                printSet(allitems, bestindex)
+                # printSet(allitems, bestindex)
     return bestindex
 
 def printInventory(inventory):
@@ -155,6 +167,15 @@ prunedItems = pruneSet(allitems)
 # startset = sumset(prunedItems, [0]*len(prunedItems))
 # print startset
 # print gensetval(startset)
+# if 'tobuy' in globals():
+#     for itemgroup in tobuy:
+#         print "--------------------------------------------------------------------------------"
+#         print itemgroup
+#         allitemscopy = copy.deepcopy(allitems)
+#         allitemscopy[itemgroup[0]] += itemgroup[1]
+#         # printInventory(allitemscopy)
+#         prunedItems = pruneSet(allitemscopy)
+
 acc = minacc
 while acc <= maxacc:
     print "--------------------------------------------------------------------------------"
