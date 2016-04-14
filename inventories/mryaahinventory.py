@@ -12,7 +12,7 @@ Midan_Goggles_of_Aiming0 = [[81, 48, 69, 24, 0, 88, 0, 0], u'Midan Goggles of Ai
 Prototype_Midan_Goggles_of_Aiming0 = [[68, 62, 18, 0, 43, 73, 0, 0], u'Prototype Midan Goggles of Aiming+CRIT9+CRIT9', 1, 14515]
 Augmented_Torrent_Mask_of_Aiming0 = [[81, 69, 24, 0, 48, 88, 0, 0], u'Augmented Torrent Mask of Aiming+CRIT12+CRIT12', 1, 14405]
 Torrent_Mask_of_Aiming0 = [[75, 65, 18, 0, 46, 81, 0, 0], u'Torrent Mask of Aiming+CRIT9+CRIT9', 1, 14329]
-Head = [ Eikon_Cloth_Hat_of_Aiming0, Prototype_Midan_Goggles_of_Aiming0, ]
+Head = [ Eikon_Cloth_Hat_of_Aiming0, Prototype_Midan_Goggles_of_Aiming0, Midan_Goggles_of_Aiming0 ]
 
 
 Eikon_Cloth_Acton_of_Aiming0 = [[111, 0, 100, 18, 70, 119, 0, 0], u'Eikon Cloth Acton of Aiming+DET9+DET9', 1, 14728]
@@ -94,7 +94,7 @@ Augmented_Primal_Earrings_of_Aiming0 = [[61, 0, 51, 46, 0, 0, 0, 0], u'Augmented
 Primal_Earrings_of_Aiming0 = [[56, 0, 49, 42, 0, 0, 0, 0], u'Primal Earrings of Aiming+DET9', 1, 14370]
 Primal_Earrings_of_Aiming1 = [[56, 9, 49, 33, 0, 0, 0, 0], u'Primal Earrings of Aiming+ACC9', 1, 14370]
 Eikon_Iron_Earring_of_Aiming0 = [[51, 46, 41, 0, 0, 0, 0, 0], u'Eikon Iron Earring of Aiming+CRIT9', 1, 13310]
-Earrings = [ Prototype_Midan_Earrings_of_Aiming0, Prototype_Midan_Earrings_of_Aiming1, Eikon_Iron_Earring_of_Aiming0, ]
+Earrings = [ Prototype_Midan_Earrings_of_Aiming0, Prototype_Midan_Earrings_of_Aiming1, Eikon_Iron_Earring_of_Aiming0, Primal_Earrings_of_Aiming0 ]
 
 
 Midan_Bracelets_of_Aiming0 = [[61, 0, 12, 49, 36, 0, 0, 0], u'Midan Bracelets of Aiming+CRIT12', 1, 14642]
@@ -115,11 +115,11 @@ Primal_Ring_of_Aiming0 = [[56, 0, 43, 47, 0, 0, 0, 0], u'Primal Ring of Aiming+C
 Primal_Ring_of_Aiming1 = [[56, 9, 34, 47, 0, 0, 0, 0], u'Primal Ring of Aiming+ACC9', 1, 14385]
 Eikon_Iron_Ring_of_Aiming0 = [[51, 0, 9, 44, 32, 0, 0, 0], u'Eikon Iron Ring of Aiming+CRIT9', 1, 13312]
 Eikon_Iron_Ring_of_Aiming1 = [[51, 9, 0, 44, 32, 0, 0, 0], u'Eikon Iron Ring of Aiming+ACC9', 1, 13312]
-Ring = [ Midan_Ring_of_Aiming0, Prototype_Midan_Ring_of_Aiming0, Eikon_Iron_Ring_of_Aiming0, Eikon_Iron_Ring_of_Aiming1, ]
+Ring = [ Midan_Ring_of_Aiming0, Prototype_Midan_Ring_of_Aiming0, Eikon_Iron_Ring_of_Aiming0, Eikon_Iron_Ring_of_Aiming1, Primal_Ring_of_Aiming0, Primal_Ring_of_Aiming1 ]
 
-# tobuy = [
-#         [3, [Torrent_Armguards_of_Aiming0, Torrent_Armguards_of_Aiming1, Torrent_Armguards_of_Aiming2,]],
-#         [5, [Torrent_Tights_of_Aiming0, Torrent_Tights_of_Aiming1, Torrent_Tights_of_Aiming2,]],
-#         [8, [Primal_Earrings_of_Aiming0, Primal_Earrings_of_Aiming1]],
-#         [10, [Primal_Ring_of_Aiming0, Primal_Ring_of_Aiming1]],
-#         ]
+tobuy = [
+        [3, [Torrent_Armguards_of_Aiming0, Torrent_Armguards_of_Aiming1, Torrent_Armguards_of_Aiming2,]],
+        [5, [Torrent_Tights_of_Aiming0, Torrent_Tights_of_Aiming1, Torrent_Tights_of_Aiming2,]],
+        # [8, [Primal_Earrings_of_Aiming0, Primal_Earrings_of_Aiming1]],
+        # [10, [Primal_Ring_of_Aiming0, Primal_Ring_of_Aiming1]],
+        ]

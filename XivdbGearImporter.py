@@ -43,7 +43,8 @@ def generateRawItem(item):
     geartype = detailedItem["category_name"]
     itemid = detailedItem["id"]
     # isunique = detailedItem["is_unique"]
-    if detailedItem["craftable"] != 0:
+    if detailedItem["craftable"] != []:
+        print detailedItem["craftable"]
         isunique = 0
     else:
         isunique = 1
@@ -122,9 +123,9 @@ def generateMeldedVersions(item, statweights, caps):
             for slot in range(2,5):
                 # determine the meld amount to use
                 if item.itemlevel < minVmeldlevel:
-                    if slot == 1 || slot == 2 || slot == 4
+                    if slot == 1 or slot == 2 or slot == 4:
                         materiamax = 9
-                    elif slot == 3
+                    elif slot == 3:
                         materiamax = 6
                 else:
                     materiamax = 12
