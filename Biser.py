@@ -9,8 +9,8 @@ import copy
 ### SETTINGS ###
 
 # from blm230plus import * # change this to include the inventory you want to calculate against
-# from mryaahinventory import * # change this to include the inventory you want to calculate against
-from drg240inv import * # change this to include the inventory you want to calculate against
+from mch220kitty import * # change this to include the inventory you want to calculate against
+# from drg240inv import * # change this to include the inventory you want to calculate against
 # from mrconductivitywarinv import * # change this to include the inventory you want to calculate against
 # from mryaahwarinv import * # change this to include the inventory you want to calculate against
 
@@ -40,7 +40,7 @@ def pruneItem(item, itemSet):
         newcaps = mincaps*otherItem[0]
         comp = caps > newcaps # does item have higher stat for any mincap required item?
         if newval > val and not True in comp:
-            # print item, " pruned by ", otherItem
+            print item, " pruned by ", otherItem
             prunecount = prunecount + 1
             if len(otherItem) == 3:
                 prunecount = prunecount + otherItem[2]
@@ -117,7 +117,7 @@ def isValid(itemset, allgears, indexes):
     global incrementRing
     if allgears[-2][indexes[-2]][3] == allgears[-3][indexes[-3]][3] and allgears[-2][indexes[-2]][2] == 1:
         incrementRing = True
-        print "invalid because of unique rings"
+        # print "invalid because of unique rings"
         return False
     mincomp = itemset >= mincaps
     maxcomp = itemset <= maxcaps
@@ -143,7 +143,7 @@ def calc_bis(allitems):
                 bestset = newset
                 bestsetval = newval
                 bestindex = list(allindex)
-                printSet(allitems, bestindex)
+                # printSet(allitems, bestindex)
     return bestindex
 
 def printInventory(inventory):
@@ -158,6 +158,13 @@ def printSet(inventory, indexes):
     for i in range(len(inventory)):
         print(inventory[i][indexes[i]])
 
+def countTotalSets(inventory):
+    total = 1
+    for slot in inventory:
+        total *= len(slot)
+    print total, "possible set combinations"
+
+
 # def pickNextBest(inventory, options):
 
 
@@ -168,35 +175,37 @@ def printSet(inventory, indexes):
 # print startset
 # print gensetval(startset)
 
-# if 'tobuy' in globals():
-#     for itemgroup in tobuy:
-#         print "--------------------------------------------------------------------------------"
-#         print itemgroup
-#         allitemscopy = copy.deepcopy(allitems)
-#         allitemscopy[itemgroup[0]] += itemgroup[1]
-#         # printInventory(allitemscopy)
-#         prunedItems = pruneSet(allitemscopy)
+if 'tobuy' in globals():
+    for itemgroup in tobuy:
+        print "--------------------------------------------------------------------------------"
+        print itemgroup
+        allitemscopy = copy.deepcopy(allitems)
+        allitemscopy[itemgroup[0]] += itemgroup[1]
+        # printInventory(allitemscopy)
+        prunedItems = pruneSet(allitemscopy)
+        countTotalSets(allitemscopy)
+        countTotalSets(prunedItems)
 
-#         acc = minacc
-#         while acc <= maxacc:
-#             print "--------------------------------------------------------------------------------"
-#             mincaps[1] = acc
-#             bestset = calc_bis(prunedItems)
-#             thisset = sumset(prunedItems, bestset)
-#             print gensetval(thisset), thisset
-#             printSet(prunedItems, bestset)
-#             acc = thisset[1]+1
+        acc = minacc
+        while acc <= maxacc:
+            print "--------------------------------------------------------------------------------"
+            mincaps[1] = acc
+            bestset = calc_bis(prunedItems)
+            thisset = sumset(prunedItems, bestset)
+            print gensetval(thisset), thisset
+            printSet(prunedItems, bestset)
+            acc = thisset[1]+1
 
-prunedItems = pruneSet(allitems)
-acc = minacc
-while acc <= maxacc:
-    print "--------------------------------------------------------------------------------"
-    mincaps[1] = acc
-    bestset = calc_bis(prunedItems)
-    thisset = sumset(prunedItems, bestset)
-    print gensetval(thisset), thisset
-    printSet(prunedItems, bestset)
-    acc = thisset[1]+1
+# prunedItems = pruneSet(allitems)
+# acc = minacc
+# while acc <= maxacc:
+#     print "--------------------------------------------------------------------------------"
+#     mincaps[1] = acc
+#     bestset = calc_bis(prunedItems)
+#     thisset = sumset(prunedItems, bestset)
+#     print gensetval(thisset), thisset
+#     printSet(prunedItems, bestset)
+#     acc = thisset[1]+1
 
 # print allindex
 # # print pruneItem(item, bracelets, cJob.weights, mincaps, maxcaps, elzenbasestats)

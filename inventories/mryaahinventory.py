@@ -40,8 +40,7 @@ Augmented_Torrent_Armguards_of_Aiming2 = [[81, 69, 69, 0, 0, 88, 0, 0], u'Augmen
 Torrent_Armguards_of_Aiming0 = [[75, 46, 65, 18, 0, 81, 0, 0], u'Torrent Armguards of Aiming+DET9+DET9', 1, 14343]
 Torrent_Armguards_of_Aiming1 = [[75, 55, 65, 9, 0, 81, 0, 0], u'Torrent Armguards of Aiming+DET9+ACC9', 1, 14343]
 Torrent_Armguards_of_Aiming2 = [[75, 64, 65, 0, 0, 81, 0, 0], u'Torrent Armguards of Aiming+ACC9+ACC9', 1, 14343]
-Hands = [ Eikon_Cloth_Sleeves_of_Aiming0, Eikon_Cloth_Sleeves_of_Aiming1, Eikon_Cloth_Sleeves_of_Aiming2, Midan_Gloves_of_Aiming0, Prototype_Midan_Gloves_of_Aiming0, ]
-
+Hands = [ Eikon_Cloth_Sleeves_of_Aiming0, Eikon_Cloth_Sleeves_of_Aiming1, Eikon_Cloth_Sleeves_of_Aiming2, Midan_Gloves_of_Aiming0, Prototype_Midan_Gloves_of_Aiming0, Torrent_Armguards_of_Aiming0, Torrent_Armguards_of_Aiming1, Torrent_Armguards_of_Aiming2, Augmented_Torrent_Armguards_of_Aiming0, Augmented_Torrent_Armguards_of_Aiming1, Augmented_Torrent_Armguards_of_Aiming2, ]
 
 Eikon_Leather_Ringbelt_of_Aiming0 = [[51, 32, 9, 44, 0, 55, 0, 0], u'Eikon Leather Ringbelt of Aiming+CRIT9', 1, 14750]
 Eikon_Leather_Ringbelt_of_Aiming1 = [[51, 41, 0, 44, 0, 55, 0, 0], u'Eikon Leather Ringbelt of Aiming+ACC9', 1, 14750]
@@ -63,7 +62,7 @@ Augmented_Torrent_Tights_of_Aiming0 = [[131, 0, 102, 0, 112, 143, 0, 0], u'Augme
 Torrent_Tights_of_Aiming0 = [[121, 0, 92, 0, 106, 131, 0, 0], u'Torrent Tights of Aiming+CRIT9+CRIT9', 1, 14357]
 Torrent_Tights_of_Aiming1 = [[121, 9, 83, 0, 106, 131, 0, 0], u'Torrent Tights of Aiming+CRIT9+ACC9', 1, 14357]
 Torrent_Tights_of_Aiming2 = [[121, 18, 74, 0, 106, 131, 0, 0], u'Torrent Tights of Aiming+ACC9+ACC9', 1, 14357]
-Legs = [ Eikon_Cloth_Culottes_of_Aiming0, Midan_Poleyns_of_Aiming0, Prototype_Midan_Poleyns_of_Aiming0, Prototype_Midan_Poleyns_of_Aiming1, Prototype_Midan_Poleyns_of_Aiming2, ]
+Legs = [ Eikon_Cloth_Culottes_of_Aiming0, Midan_Poleyns_of_Aiming0, Prototype_Midan_Poleyns_of_Aiming0, Prototype_Midan_Poleyns_of_Aiming1, Prototype_Midan_Poleyns_of_Aiming2, Torrent_Tights_of_Aiming0, Torrent_Tights_of_Aiming1, Torrent_Tights_of_Aiming2, Augmented_Torrent_Tights_of_Aiming0 ]
 
 
 Eikon_Leather_Thighboots_of_Aiming0 = [[68, 62, 18, 41, 0, 73, 0, 0], u'Eikon Leather Thighboots of Aiming+CRIT9+CRIT9', 1, 14731]
@@ -84,7 +83,7 @@ Augmented_Primal_Choker_of_Aiming0 = [[61, 51, 12, 0, 36, 0, 0, 0], u'Augmented 
 Primal_Choker_of_Aiming0 = [[56, 49, 9, 0, 34, 0, 0, 0], u'Primal Choker of Aiming+CRIT9', 1, 14375]
 Camphorwood_Necklace_of_Aiming0 = [[51, 32, 9, 0, 46, 0, 0, 0], u'Camphorwood Necklace of Aiming+CRIT9', 1, 13309]
 Camphorwood_Necklace_of_Aiming1 = [[51, 41, 0, 0, 46, 0, 0, 0], u'Camphorwood Necklace of Aiming+ACC9', 1, 13309]
-Necklace = [ Prototype_Midan_Neckband_of_Aiming0, Camphorwood_Necklace_of_Aiming0, Camphorwood_Necklace_of_Aiming1, ]
+Necklace = [ Prototype_Midan_Neckband_of_Aiming0, Camphorwood_Necklace_of_Aiming0, Camphorwood_Necklace_of_Aiming1, Midan_Neckband_of_Aiming0 ]
 
 
 Midan_Earrings_of_Aiming0 = [[61, 51, 12, 0, 36, 0, 0, 0], u'Midan Earrings of Aiming+CRIT12', 1, 14632]
@@ -115,7 +114,7 @@ Primal_Ring_of_Aiming0 = [[56, 0, 43, 47, 0, 0, 0, 0], u'Primal Ring of Aiming+C
 Primal_Ring_of_Aiming1 = [[56, 9, 34, 47, 0, 0, 0, 0], u'Primal Ring of Aiming+ACC9', 1, 14385]
 Eikon_Iron_Ring_of_Aiming0 = [[51, 0, 9, 44, 32, 0, 0, 0], u'Eikon Iron Ring of Aiming+CRIT9', 1, 13312]
 Eikon_Iron_Ring_of_Aiming1 = [[51, 9, 0, 44, 32, 0, 0, 0], u'Eikon Iron Ring of Aiming+ACC9', 1, 13312]
-Ring = [ Midan_Ring_of_Aiming0, Prototype_Midan_Ring_of_Aiming0, Eikon_Iron_Ring_of_Aiming0, Eikon_Iron_Ring_of_Aiming1, Primal_Ring_of_Aiming0, Primal_Ring_of_Aiming1 ]
+Ring = [ Midan_Ring_of_Aiming0, Prototype_Midan_Ring_of_Aiming0, Eikon_Iron_Ring_of_Aiming0, Eikon_Iron_Ring_of_Aiming1, Primal_Ring_of_Aiming0, ]
 
 tobuy = [
         [3, [Torrent_Armguards_of_Aiming0, Torrent_Armguards_of_Aiming1, Torrent_Armguards_of_Aiming2,]],

@@ -29,8 +29,8 @@ def generateRawItem(item):
             }
     detailedItem = getQueryResponse(item["url_api"])
     # pprintjson(detailedItem)
-    if detailedItem["craftable"] != [] and overmeld:
-        meldslots = 5
+    if detailedItem["craftable"] != [] and overmeld > 0:
+        meldslots = min(5, detailedItem["materia_slot_count"]+overmeld)
     else:
         meldslots = detailedItem["materia_slot_count"]
     # print detailedItem
@@ -44,7 +44,7 @@ def generateRawItem(item):
     itemid = detailedItem["id"]
     # isunique = detailedItem["is_unique"]
     if detailedItem["craftable"] != []:
-        print detailedItem["craftable"]
+        # print detailedItem["craftable"]
         isunique = 0
     else:
         isunique = 1

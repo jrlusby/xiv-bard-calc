@@ -1,18 +1,14 @@
 Midan_Metal_Spear0 = [[148, 0, 110, 118, 0, 162, 81, 2.88], u'Midan Metal Spear+CRIT12+CRIT12', 1, 14577]
 Midan_Metal_Spear1 = [[148, 12, 98, 118, 0, 162, 81, 2.88], u'Midan Metal Spear+CRIT12+ACC12', 1, 14577]
 Midan_Metal_Spear2 = [[148, 24, 86, 118, 0, 162, 81, 2.88], u'Midan Metal Spear+ACC12+ACC12', 1, 14577]
-Augmented_Slipstream_Partisan0 = [[141, 0, 120, 24, 84, 154, 80, 2.88], u'Augmented Slipstream Partisan+DET12+DET12', 1, 14391]
-Augmented_Slipstream_Partisan1 = [[141, 12, 120, 12, 84, 154, 80, 2.88], u'Augmented Slipstream Partisan+DET12+ACC12', 1, 14391]
-Augmented_Slipstream_Partisan2 = [[141, 24, 120, 0, 84, 154, 80, 2.88], u'Augmented Slipstream Partisan+ACC12+ACC12', 1, 14391]
-Arm = [ Midan_Metal_Spear0, Midan_Metal_Spear1, Midan_Metal_Spear2, Augmented_Slipstream_Partisan0, Augmented_Slipstream_Partisan1, Augmented_Slipstream_Partisan2, ]
+Arm = [ Midan_Metal_Spear0, Midan_Metal_Spear1, Midan_Metal_Spear2, ]
 
 
 Midan_Mask_of_Maiming0 = [[81, 69, 24, 0, 48, 88, 0, 0], u'Midan Mask of Maiming+CRIT12+CRIT12', 1, 14589]
 Augmented_Slipstream_Helm_of_Maiming0 = [[81, 48, 69, 24, 0, 88, 0, 0], u'Augmented Slipstream Helm of Maiming+DET12+DET12', 1, 14403]
 Augmented_Slipstream_Helm_of_Maiming1 = [[81, 60, 69, 12, 0, 88, 0, 0], u'Augmented Slipstream Helm of Maiming+DET12+ACC12', 1, 14403]
 Augmented_Slipstream_Helm_of_Maiming2 = [[81, 69, 69, 0, 0, 88, 0, 0], u'Augmented Slipstream Helm of Maiming+ACC12+ACC9', 1, 14403]
-Augmented_Slipstream_Helm_of_Maiming3 = [[81, 60, 69, 0, 12, 88, 0, 0], u'Augmented Slipstream Helm of Maiming+ACC12+SKS12', 1, 14403]
-Head = [ Midan_Mask_of_Maiming0, Augmented_Slipstream_Helm_of_Maiming0, Augmented_Slipstream_Helm_of_Maiming1, Augmented_Slipstream_Helm_of_Maiming2, Augmented_Slipstream_Helm_of_Maiming3 ]
+Head = [ Augmented_Slipstream_Helm_of_Maiming0, Augmented_Slipstream_Helm_of_Maiming1, Augmented_Slipstream_Helm_of_Maiming2, ]
 
 
 Midan_Jacket_of_Maiming0 = [[131, 0, 102, 107, 0, 143, 0, 0], u'Midan Jacket of Maiming+CRIT12+CRIT12', 1, 14596]
@@ -41,7 +37,7 @@ Midan_Breeches_of_Maiming2 = [[131, 102, 0, 0, 112, 143, 0, 0], u'Midan Breeches
 Augmented_Slipstream_Breeches_of_Maiming0 = [[131, 0, 112, 99, 0, 143, 0, 0], u'Augmented Slipstream Breeches of Maiming+DET12+DET12', 1, 14431]
 Augmented_Slipstream_Breeches_of_Maiming1 = [[131, 12, 112, 87, 0, 143, 0, 0], u'Augmented Slipstream Breeches of Maiming+DET12+ACC12', 1, 14431]
 Augmented_Slipstream_Breeches_of_Maiming2 = [[131, 24, 112, 75, 0, 143, 0, 0], u'Augmented Slipstream Breeches of Maiming+ACC12+ACC12', 1, 14431]
-Legs = [ Midan_Breeches_of_Maiming0, Midan_Breeches_of_Maiming1, Midan_Breeches_of_Maiming2, Augmented_Slipstream_Breeches_of_Maiming0, Augmented_Slipstream_Breeches_of_Maiming1, Augmented_Slipstream_Breeches_of_Maiming2, ]
+Legs = [ Augmented_Slipstream_Breeches_of_Maiming2, ]
 
 
 Midan_Boots_of_Maiming0 = [[81, 0, 69, 24, 48, 88, 0, 0], u'Midan Boots of Maiming+DET12+DET12', 1, 14624]
@@ -75,6 +71,6 @@ Bracelets = [ Midan_Bracelets_of_Slaying0, Augmented_Primal_Bracelet_of_Slaying0
 Midan_Ring_of_Slaying0 = [[61, 51, 48, 0, 0, 0, 0, 0], u'Midan Ring of Slaying+CRIT12', 1, 14646]
 Augmented_Primal_Ring_of_Slaying0 = [[61, 0, 12, 49, 36, 0, 0, 0], u'Augmented Primal Ring of Slaying+CRIT12', 1, 14460]
 Augmented_Primal_Ring_of_Slaying1 = [[61, 12, 0, 49, 36, 0, 0, 0], u'Augmented Primal Ring of Slaying+ACC12', 1, 14460]
-Ring = [ Midan_Ring_of_Slaying0, Augmented_Primal_Ring_of_Slaying0, Augmented_Primal_Ring_of_Slaying1, ]
-
-
+Primal_Ring_of_Slaying0 = [[56, 0, 12, 47, 34, 0, 0, 0], u'Primal Ring of Slaying+CRIT12', 1, 14384]
+Primal_Ring_of_Slaying1 = [[56, 12, 0, 47, 34, 0, 0, 0], u'Primal Ring of Slaying+ACC12', 1, 14384]
+Ring = [ Midan_Ring_of_Slaying0, Augmented_Primal_Ring_of_Slaying0, Augmented_Primal_Ring_of_Slaying1, Primal_Ring_of_Slaying0, Primal_Ring_of_Slaying1 ]
