@@ -9,13 +9,14 @@ import copy
 ### SETTINGS ###
 
 # from blm230plus import * # change this to include the inventory you want to calculate against
-from mch220kitty import * # change this to include the inventory you want to calculate against
+from tmpinv import * # change this to include the inventory you want to calculate against
 # from drg240inv import * # change this to include the inventory you want to calculate against
 # from mrconductivitywarinv import * # change this to include the inventory you want to calculate against
 # from mryaahwarinv import * # change this to include the inventory you want to calculate against
 
 unpruneablerings = 0
 allitems = [ Arm, Head, Body, Hands, Waist, Legs, Feet, Necklace, Earrings, Bracelets, Ring, Ring, food, ]
+printintermediate = False
 
 ################
 
@@ -143,7 +144,9 @@ def calc_bis(allitems):
                 bestset = newset
                 bestsetval = newval
                 bestindex = list(allindex)
-                # printSet(allitems, bestindex)
+                if printintermediate:
+                    print newval, newset
+                    printSet(allitems, bestindex)
     return bestindex
 
 def printInventory(inventory):
@@ -195,17 +198,18 @@ if 'tobuy' in globals():
             print gensetval(thisset), thisset
             printSet(prunedItems, bestset)
             acc = thisset[1]+1
-
-# prunedItems = pruneSet(allitems)
-# acc = minacc
-# while acc <= maxacc:
-#     print "--------------------------------------------------------------------------------"
-#     mincaps[1] = acc
-#     bestset = calc_bis(prunedItems)
-#     thisset = sumset(prunedItems, bestset)
-#     print gensetval(thisset), thisset
-#     printSet(prunedItems, bestset)
-#     acc = thisset[1]+1
+else:
+    prunedItems = pruneSet(allitems)
+    countTotalSets(prunedItems)
+    acc = minacc
+    while acc <= maxacc:
+        print "--------------------------------------------------------------------------------"
+        mincaps[1] = acc
+        bestset = calc_bis(prunedItems)
+        thisset = sumset(prunedItems, bestset)
+        print gensetval(thisset), thisset
+        printSet(prunedItems, bestset)
+        acc = thisset[1]+1
 
 # print allindex
 # # print pruneItem(item, bracelets, cJob.weights, mincaps, maxcaps, elzenbasestats)

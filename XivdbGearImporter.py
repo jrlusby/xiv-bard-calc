@@ -30,9 +30,10 @@ def generateRawItem(item):
     detailedItem = getQueryResponse(item["url_api"])
     # pprintjson(detailedItem)
     if detailedItem["craftable"] != [] and overmeld > 0:
-        meldslots = min(5, detailedItem["materia_slot_count"]+overmeld)
+        overmeldable = True
     else:
-        meldslots = detailedItem["materia_slot_count"]
+        overmeldable = False
+    meldslots = detailedItem["materia_slot_count"]
     # print detailedItem
     for attribute in detailedItem["attributes_params"]:
         stats[attribute["name"]] = max(attribute["value"], attribute["value_hq"])
@@ -48,7 +49,7 @@ def generateRawItem(item):
         isunique = 0
     else:
         isunique = 1
-    return GearItem(stats[cJob.AttributeName()], stats["Accuracy"], stats["Critical Hit Rate"], stats["Determination"], stats[cJob.SSName()], stats["Vitality"], WEAPONDAMAGE, WEAPONDELAY, detailedItem["name"], meldslots, geartype, itemlevel, isunique, itemid, cJob.attributeval)
+    return GearItem(stats[cJob.AttributeName()], stats["Accuracy"], stats["Critical Hit Rate"], stats["Determination"], stats[cJob.SSName()], stats["Vitality"], WEAPONDAMAGE, WEAPONDELAY, detailedItem["name"], meldslots, geartype, itemlevel, isunique, itemid, cJob.attributeval, overmeldable)
 
 
 def equip_slot_category_map(items):
@@ -113,26 +114,35 @@ def generateMeldedVersions(item, statweights, caps):
     # TODO handle det melds
     # while we have done less acc melds than there are slots
     itemnames = []
-    while accmelds <= item.meldslots:
+    if item.overmeldable:
+        meldslots = min(5, item.meldslots+overmeld)
+    else:
+        meldslots = item.meldslots
+    while accmelds <= meldslots:
         meldchoices = ""
         item_copy = copy.deepcopy(item)
         # meld the non accuracy slots
-        for i in range(0, item.meldslots - accmelds):
+        for i in range(0, meldslots - accmelds):
             bestmeldstats = 0
             bestmeldslot = 0
-            for slot in range(2,5):
-                # determine the meld amount to use
-                if item.itemlevel < minVmeldlevel:
-                    if slot == 1 or slot == 2 or slot == 4:
-                        materiamax = 9
-                    elif slot == 3:
-                        materiamax = 6
-                else:
-                    materiamax = 12
-                availstats = min(materiamax, mycaps[item_type_to_index(item.geartype)][statslot_to_capslot(slot)] -item_copy.stats[slot])
-                if availstats*statweights[slot] > bestmeldstats*statweights[bestmeldslot]:
-                    bestmeldstats = availstats
-                    bestmeldslot = slot
+            if cJob.attributeval == 3 and i == 0 and item.stats[0] == 0:
+                bestmeldstats = 0
+                bestmeldstats = 15
+                materiamax = 15
+            else:
+                for slot in range(2,5):
+                    # determine the meld amount to use
+                    if item.itemlevel < minVmeldlevel or i - item.meldslots >= overmeldVcount:
+                        if slot == 1 or slot == 2 or slot == 4:
+                            materiamax = 9
+                        elif slot == 3:
+                            materiamax = 6
+                    else:
+                        materiamax = 12
+                    availstats = min(materiamax, mycaps[item_type_to_index(item.geartype)][statslot_to_capslot(slot)] -item_copy.stats[slot])
+                    if availstats*statweights[slot] > bestmeldstats*statweights[bestmeldslot]:
+                        bestmeldstats = availstats
+                        bestmeldslot = slot
             item_copy.stats[bestmeldslot] += bestmeldstats
             meldchoices += "+" + stat_names[bestmeldslot] + str(bestmeldstats)
         for i in range(0, accmelds):

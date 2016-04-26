@@ -22,11 +22,13 @@ drgweights = [1.0, 0, .230, .168, .131, 0, 12.241, 0]
 
 miqotebasestats = [299, 354, 354, 218, 354, 218, 0, 0]
 
-overmeld = 1
+overmeld = 0
+overmeldVcount = 0
 minVmeldlevel = 240
 minlevel = 220
 maxdefaultobtainedlvl = 220
-mchfood = [pipirapira, gsweetfish, sstaff]
+mchfood = [sstaff, pipirapira, gsweetfish]
+cheapwarfood = [morelsalad, flintcaviar, gsweetfish]
 cheapmchfood = [flintcaviar, gsweetfish]
 blmfood = [applestrudle]
 
@@ -35,11 +37,11 @@ blmfood = [applestrudle]
 mch = JobClass(rinchanweights, mchfood, 31, 2)
 blm = JobClass(blmweights, blmfood, 25, 4)
 nin = JobClass(ninweights, mchfood, 30, 2)
-war = JobClass(warweights, mchfood, 3, 3)
+war = JobClass(warweights, cheapwarfood, 3, 3)
 drg = JobClass(drgweights, mchfood, 4, 1)
 
 basestats = miqotebasestats
-cJob = mch
+cJob = war
 food = cJob.food
 
 ################
