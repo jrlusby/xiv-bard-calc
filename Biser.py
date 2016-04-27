@@ -1,22 +1,24 @@
 #! /usr/bin/python2
 
+from __future__ import division
 import numpy
 import math
 import BardModel
 from xivsettings import *
 import copy
+import Queue
+from multiprocessing import Pool, Lock
+printlock = Lock()
 
 ### SETTINGS ###
 
-# from blm230plus import * # change this to include the inventory you want to calculate against
-from tmpinv import * # change this to include the inventory you want to calculate against
-# from drg240inv import * # change this to include the inventory you want to calculate against
+from drg240inv import * # change this to include the inventory you want to calculate against
 # from mrconductivitywarinv import * # change this to include the inventory you want to calculate against
 # from mryaahwarinv import * # change this to include the inventory you want to calculate against
 
 unpruneablerings = 0
 allitems = [ Arm, Head, Body, Hands, Waist, Legs, Feet, Necklace, Earrings, Bracelets, Ring, Ring, food, ]
-printintermediate = False
+printintermediate = True
 
 ################
 
@@ -28,7 +30,9 @@ def pruneMaxItems(item):
     for i in range(len(maxcaps)):
         # print item
         if stats[i] > maxcaps[i]-basestats[i]:
+            printlock.acquire()
             print "exceded max, pruning ", item
+            printlock.release()
             return True
     return False
 
@@ -41,7 +45,9 @@ def pruneItem(item, itemSet):
         newcaps = mincaps*otherItem[0]
         comp = caps > newcaps # does item have higher stat for any mincap required item?
         if newval > val and not True in comp:
+            printlock.acquire()
             print item, " pruned by ", otherItem
+            printlock.release()
             prunecount = prunecount + 1
             if len(otherItem) == 3:
                 prunecount = prunecount + otherItem[2]
@@ -60,7 +66,9 @@ def pruneSet(itemSet):
             if pruneItem(item, newitemsubset) < 1:
                 neweritemsubset.append(item)
         newset.append(neweritemsubset)
+        printlock.acquire()
         print len(itemSubset) - len(neweritemsubset)
+        printlock.release()
     # prune the rings
     for itemSubset in itemSet[-3:-1]:
         newitemsubset = []
@@ -73,7 +81,9 @@ def pruneSet(itemSet):
                 neweritemsubset.append(item)
         neweritemsubset = neweritemsubset + newitemsubset[-unpruneablerings:]
         newset.append(neweritemsubset)
+        printlock.acquire()
         print len(itemSubset) - len(neweritemsubset)
+        printlock.release()
     # just add the food
     newset.append(itemSet[-1])
     return newset
@@ -100,7 +110,9 @@ def increment(inventory, indexes):
     global incrementRing
     i = 0
     if incrementRing:
+        printlock.acquire()
         print indexes
+        printlock.release()
         i = len(indexes)-3
     while i < len(inventory):
         if indexes[i]+1 == len(inventory[i]):
@@ -130,12 +142,19 @@ def isValid(itemset, allgears, indexes):
 def gensetval(itemset): # Use this for statweight calculations
     return itemValue(itemset)
 
-def calc_bis(allitems):
-    allindex = [0]*len(allitems)
+def calc_bis_subset(args):
+    allitems, startpoint, divisor = args
+    total = countTotalSets(allitems)
+    index = int(math.floor(total/divisor*startpoint)) # start
+    stop = int(math.floor(total/divisor*(startpoint+1)))
+    allindex = num_to_indexes(index, allitems)
+    printlock.acquire()
+    print stop - index, "sets being compared from", index, stop
+    print allindex
+    printlock.release()
     bestindex = allindex
-    bestset = sumset(allitems, allindex)
     bestsetval = 0
-    while(not increment(allitems, allindex)):
+    while( index < stop ):
         newset = sumset(allitems, allindex)
         # print newset, newval
         if(isValid(newset, allitems, allindex)):
@@ -145,9 +164,52 @@ def calc_bis(allitems):
                 bestsetval = newval
                 bestindex = list(allindex)
                 if printintermediate:
+                    printlock.acquire()
                     print newval, newset
                     printSet(allitems, bestindex)
+                    printlock.release()
+        increment(allitems, allindex)
+        index += 1
     return bestindex
+
+def calc_bis(allitems):
+    divisor = 7
+    inputset = []
+    for i in range(divisor):
+        inputset.append((allitems, i, divisor))
+    p = Pool(divisor)
+    bestsubsets = p.map(calc_bis_subset, inputset)
+    print bestsubsets
+    maxval = 0
+    bestsubset = 0
+    for subset in bestsubsets:
+        newset = sumset(allitems, subset)
+        newval = gensetval(newset)
+        if newval > maxval:
+            bestsubset = subset
+            maxval = newval
+    return bestsubset
+
+
+
+
+
+def countTotalSets(inventory):
+    total = 1
+    for slot in inventory:
+        total *= len(slot)
+    # print total, "possible set combinations"
+    return total
+
+def num_to_indexes(number, lengthlist):
+    indexes = [0] * len(lengthlist)
+    for i in range(len(lengthlist)):
+        length = len(lengthlist[i])
+        indexes[i] = number % length
+        number = int(number / length)
+    return indexes
+
+
 
 def printInventory(inventory):
     i = 0
@@ -160,12 +222,6 @@ def printInventory(inventory):
 def printSet(inventory, indexes):
     for i in range(len(inventory)):
         print(inventory[i][indexes[i]])
-
-def countTotalSets(inventory):
-    total = 1
-    for slot in inventory:
-        total *= len(slot)
-    print total, "possible set combinations"
 
 
 # def pickNextBest(inventory, options):
@@ -205,6 +261,7 @@ else:
     while acc <= maxacc:
         print "--------------------------------------------------------------------------------"
         mincaps[1] = acc
+        # bestset = calc_bis_subset((prunedItems, 0, 1))
         bestset = calc_bis(prunedItems)
         thisset = sumset(prunedItems, bestset)
         print gensetval(thisset), thisset

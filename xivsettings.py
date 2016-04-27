@@ -9,7 +9,7 @@ minacc = 702
 maxacc = minacc
 
 # [DEX, ACC, CRIT, DET, SKS, VIT, WD, DELAY] you can set any of the minimum or maximum values, its fun
-mincaps = numpy.array([0, minacc, 0, 0, 0, 0, 0, 0])
+mincaps = numpy.array([0, minacc, 0, 0, 606, 0, 0, 0])
 maxcaps = numpy.array([10000, 10000, 10000, 10000, 10000, 10000, 10000, 10000]) # 420 is double ogcd cap according to krietor highwind
 
 # bardweights = [1.0, 0, 0.125, 0.124, 0.070, 0, 9.806859476776257, 0]
@@ -28,6 +28,7 @@ minVmeldlevel = 240
 minlevel = 220
 maxdefaultobtainedlvl = 220
 mchfood = [sstaff, pipirapira, gsweetfish]
+drgfood = [pipirapira, gsweetfish]
 cheapwarfood = [morelsalad, flintcaviar, gsweetfish]
 cheapmchfood = [flintcaviar, gsweetfish]
 blmfood = [applestrudle]
@@ -38,10 +39,10 @@ mch = JobClass(rinchanweights, mchfood, 31, 2)
 blm = JobClass(blmweights, blmfood, 25, 4)
 nin = JobClass(ninweights, mchfood, 30, 2)
 war = JobClass(warweights, cheapwarfood, 3, 3)
-drg = JobClass(drgweights, mchfood, 4, 1)
+drg = JobClass(drgweights, drgfood, 4, 1)
 
 basestats = miqotebasestats
-cJob = war
+cJob = drg
 food = cJob.food
 
 ################
