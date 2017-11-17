@@ -1,8 +1,8 @@
 
 class GearItem:
     categories = ["Arm", "Head", "Body", "Hands", "Waist", "Legs", "Feet", "Necklace", "Earrings", "Bracelets", "Ring"]
-    def __init__(self, AP, ACC, CRIT, DET, SS, VIT, WD, WDelay, name, meldslots, geartype, itemlevel, isunique, itemid, attribute, overmeldable):
-        self.stats = [AP, ACC, CRIT, DET, SS, VIT, WD, WDelay]
+    def __init__(self, AP, ACC, CRIT, DET, SS, VIT, WD, WDelay, name, meldslots, geartype, itemlevel, isunique, itemid, attribute, overmeldable, parry, piety):
+        self.stats = [AP, ACC, CRIT, DET, SS, VIT, WD, WDelay, parry, piety]
         self.name = name
         self.meldslots = meldslots
         self.geartype = geartype

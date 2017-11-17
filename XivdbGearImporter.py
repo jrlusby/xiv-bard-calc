@@ -6,7 +6,19 @@ import copy
 from xivsettings import *
 from GearItem import *
 
-categories = ["Arm", "Head", "Body", "Hands", "Waist", "Legs", "Feet", "Necklace", "Earrings", "Bracelets", "Ring"]
+categories = [
+["Arm", "Grimoire"],
+["Head",],
+["Body",],
+["Hands",],
+["Waist",],
+["Legs",],
+["Feet",],
+["Necklace",],
+["Earrings",],
+["Bracelets",],
+["Ring",],
+]
 stat_names = ["AP", "ACC", "CRIT", "DET", "SS", "VIT", "WepDmg", "WepDelay"]
 
 def pprintjson(jsonstuff):
@@ -26,10 +38,14 @@ def generateRawItem(item):
             "Determination":0,
             cJob.SSName():0,
             "Critical Hit Rate":0,
+            "Parry":0,
+            "Piety":0,
             }
     detailedItem = getQueryResponse(item["url_api"])
     # pprintjson(detailedItem)
-    if detailedItem["craftable"] != [] and overmeld > 0:
+    # print detailedItem["name"]
+    if detailedItem["craftable"] != None and detailedItem["craftable"] != [] and overmeld > 0:
+        # print detailedItem["craftable"]
         overmeldable = True
     else:
         overmeldable = False
@@ -44,12 +60,13 @@ def generateRawItem(item):
     geartype = detailedItem["category_name"]
     itemid = detailedItem["id"]
     # isunique = detailedItem["is_unique"]
-    if detailedItem["craftable"] != []:
+    if detailedItem["craftable"] != None and detailedItem["craftable"] != []:
         # print detailedItem["craftable"]
         isunique = 0
     else:
         isunique = 1
-    return GearItem(stats[cJob.AttributeName()], stats["Accuracy"], stats["Critical Hit Rate"], stats["Determination"], stats[cJob.SSName()], stats["Vitality"], WEAPONDAMAGE, WEAPONDELAY, detailedItem["name"], meldslots, geartype, itemlevel, isunique, itemid, cJob.attributeval, overmeldable)
+    # print detailedItem["name"].encode("ascii", "ignore")
+    return GearItem(stats[cJob.AttributeName()], stats["Accuracy"], stats["Critical Hit Rate"], stats["Determination"], stats[cJob.SSName()], stats["Vitality"], WEAPONDAMAGE, WEAPONDELAY, detailedItem["name"].replace("'", "").replace("-",""), meldslots, geartype, itemlevel, isunique, itemid, cJob.attributeval, overmeldable, stats["Parry"], stats["Piety"])
 
 
 def equip_slot_category_map(items):
@@ -62,8 +79,11 @@ def categorize_items(items):
     for item in items:
         gitem = generateRawItem(item)
         for i in range(0, len(categories)):
-            if categories[i] in gitem.geartype:
-                item_sorted[i].append(gitem)
+            for categorie in categories[i]:
+                if categorie in gitem.geartype:
+                    item_sorted[i].append(gitem)
+                # else:
+                #     print categorie, gitem.geartype
     return item_sorted
 
 def statslot_to_capslot(statslot):
@@ -111,6 +131,7 @@ def determine_caps(items):
 def generateMeldedVersions(item, statweights, caps):
     accmelds = 0
     mycaps = caps[item.itemlevel]
+    materiamax = 12
     # TODO handle det melds
     # while we have done less acc melds than there are slots
     itemnames = []
@@ -121,30 +142,33 @@ def generateMeldedVersions(item, statweights, caps):
     while accmelds <= meldslots:
         meldchoices = ""
         item_copy = copy.deepcopy(item)
-        # meld the non accuracy slots
-        for i in range(0, meldslots - accmelds):
-            bestmeldstats = 0
-            bestmeldslot = 0
-            if cJob.attributeval == 3 and i == 0 and item.stats[0] == 0:
+        if doDamageMelds:
+            # meld the non accuracy slots
+            for i in range(0, meldslots - accmelds):
                 bestmeldstats = 0
-                bestmeldstats = 15
-                materiamax = 15
-            else:
-                for slot in range(2,5):
-                    # determine the meld amount to use
-                    if item.itemlevel < minVmeldlevel or i - item.meldslots >= overmeldVcount:
-                        if slot == 1 or slot == 2 or slot == 4:
-                            materiamax = 9
-                        elif slot == 3:
-                            materiamax = 6
-                    else:
-                        materiamax = 12
-                    availstats = min(materiamax, mycaps[item_type_to_index(item.geartype)][statslot_to_capslot(slot)] -item_copy.stats[slot])
-                    if availstats*statweights[slot] > bestmeldstats*statweights[bestmeldslot]:
-                        bestmeldstats = availstats
-                        bestmeldslot = slot
-            item_copy.stats[bestmeldslot] += bestmeldstats
-            meldchoices += "+" + stat_names[bestmeldslot] + str(bestmeldstats)
+                bestmeldslot = 0
+                if cJob.attributeval == 3 and i == 0 and item.stats[0] == 0:
+                    bestmeldstats = 0
+                    bestmeldstats = 15
+                    materiamax = 15
+                else:
+                    for slot in range(2,5):
+                        # determine the meld amount to use
+                        if item.itemlevel < minVmeldlevel or i - item.meldslots >= overmeldVcount:
+                            if slot == 1 or slot == 2 or slot == 4:
+                                materiamax = 9
+                            elif slot == 3:
+                                materiamax = 6
+                        else:
+                            materiamax = 12
+                        availstats = min(materiamax, mycaps[item_type_to_index(item.geartype)][statslot_to_capslot(slot)] -item_copy.stats[slot])
+                        if availstats*statweights[slot] > bestmeldstats*statweights[bestmeldslot]:
+                            bestmeldstats = availstats
+                            bestmeldslot = slot
+                item_copy.stats[bestmeldslot] += bestmeldstats
+                meldchoices += "+" + stat_names[bestmeldslot] + str(bestmeldstats)
+        else:
+            accmelds = meldslots
         for i in range(0, accmelds):
             availstats = min(materiamax, mycaps[item_type_to_index(item.geartype)][0] - item_copy.stats[1])
             item_copy.stats[1] += availstats
@@ -190,7 +214,7 @@ caps = determine_caps(items_sorted)
 i = 0
 catnames = []
 for item_cat in items_sorted:
-    catname = categories[i]
+    catname = categories[i][0]
     if catname == "Ring":
         catnames.append(catname)
     catnames.append(catname)
